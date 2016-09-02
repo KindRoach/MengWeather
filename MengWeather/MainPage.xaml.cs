@@ -68,6 +68,9 @@ namespace MengWeather
                     }
                 }
             }
+
+            SettingFrame.Navigate(typeof(SettingPage));
+
         }
 
         private async void AddCityOnPivot(CityInfo newCity)
@@ -265,7 +268,16 @@ namespace MengWeather
 
         private void SettingButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (SettingFrame.Visibility == Visibility.Collapsed)
+            {
+                SettingFrame.Visibility = Visibility.Visible;
+                (sender as AppBarButton).Icon = new SymbolIcon(Symbol.Back);
+            }
+            else
+            {
+                SettingFrame.Visibility = Visibility.Collapsed;
+                (sender as AppBarButton).Icon = new SymbolIcon(Symbol.Setting);
+            }
         }
     }
 }

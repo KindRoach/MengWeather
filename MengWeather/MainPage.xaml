@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Pivot Name="myPivot" MaxWidth="900" SelectionChanged="myPivot_SelectionChanged"/>
-        <Frame Name="SettingFrame" Visibility="Collapsed"/>
+        <Frame Name="SettingFrame" Visibility="Collapsed" Width="900" HorizontalAlignment="Center"/>
         <AppBar Grid.Row="1"
                 VerticalAlignment="Bottom"
                 ClosedDisplayMode="Compact"
