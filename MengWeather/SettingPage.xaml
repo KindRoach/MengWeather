@@ -11,7 +11,7 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
     </Page.Resources>
-    <Grid Background="HotPink">
+    <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
@@ -23,7 +23,7 @@
             <TextBlock Style="{StaticResource TextStyle}" Margin="0 12 0 0">联系作者</TextBlock>
             <TextBlock Style="{StaticResource TextStyle}">kindroach@hotmail.com</TextBlock>
             <TextBlock Style="{StaticResource TextStyle}" Margin="0 12 0 0">本程序开源，不用于任何商业用途</TextBlock>
-            <HyperlinkButton Content="访问GitHub" Margin="0 -4 0 0" NavigateUri="https://github.com/KindRoach/MengWeather"/>
+            <HyperlinkButton Content="访问GitHub" Margin="0 -4 0 0" NavigateUri="https://github.com/KindRoach/MengWeather" Foreground="White"/>
         </StackPanel>
     </Grid>
 </Page>

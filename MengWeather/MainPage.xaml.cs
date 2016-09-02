@@ -11,6 +11,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -53,7 +54,7 @@ namespace MengWeather
             }
             catch (Exception)
             {
-                await new MessageDialog("定位失败，请确保在打开设备的定位功能，并在设置中允许本应用的访问您的位置。").ShowAsync();
+                await new MessageDialog("定位失败，请确保在打开设备的定位功能，并在设置中允许本应用的访问您的位置，您也可以手动添加城市。").ShowAsync();
             }
 
             AddCityOnPivotWithWriteSetting(locatedCity);
@@ -75,15 +76,11 @@ namespace MengWeather
 
         private async void AddCityOnPivot(CityInfo newCity)
         {
-            if (newCity.ID == "null")
-            {
-                return;
-            }
             var pivotItem = new PivotItem();
             var textBlock = new TextBlock();
             textBlock.Text = newCity.City;
             // 设置Header的字体颜色
-            textBlock.Foreground = new SolidColorBrush(Colors.Pink);
+            textBlock.Foreground = new SolidColorBrush(Colors.Gray);
             pivotItem.Header = textBlock;
             try
             {
@@ -101,6 +98,11 @@ namespace MengWeather
 
         private async void AddCityOnPivotWithWriteSetting(CityInfo newCity)
         {
+
+            if (newCity.ID == "null")
+            {
+                return;
+            }
             if (AddedCity.Contains(newCity.ID))
             {
                 await new MessageDialog("该城市已添加！").ShowAsync();
@@ -256,12 +258,17 @@ namespace MengWeather
         private void myPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var pivotItem = myPivot.Items[LastPviotSelectedIndex] as PivotItem;
-            var textBlock = pivotItem.Header as TextBlock;
-            textBlock.Foreground = new SolidColorBrush(Colors.Pink);
-
+            if (pivotItem != null)
+            {
+                var textBlock = pivotItem.Header as TextBlock;
+                textBlock.Foreground = new SolidColorBrush(Colors.Gray);
+            }
             pivotItem = myPivot.SelectedItem as PivotItem;
-            textBlock = pivotItem.Header as TextBlock;
-            textBlock.Foreground = new SolidColorBrush(Colors.White);
+            if (pivotItem != null)
+            {
+                var textBlock = pivotItem.Header as TextBlock;
+                textBlock.Foreground = new SolidColorBrush(Colors.White);
+            }
 
             LastPviotSelectedIndex = myPivot.SelectedIndex;
         }
@@ -277,6 +284,18 @@ namespace MengWeather
             {
                 SettingFrame.Visibility = Visibility.Collapsed;
                 (sender as AppBarButton).Icon = new SymbolIcon(Symbol.Setting);
+            }
+        }
+
+        private void BackgroundGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            {
+                StatusBar statusBar = StatusBar.GetForCurrentView();
+                statusBar.ForegroundColor = Colors.White;
+                var gridBackground = (sender as Grid).Background;
+                statusBar.BackgroundColor = ((SolidColorBrush)gridBackground).Color;
+                statusBar.BackgroundOpacity = 1;
             }
         }
     }

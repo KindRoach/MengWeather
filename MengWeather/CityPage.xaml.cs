@@ -6,8 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -49,6 +52,39 @@ namespace MengWeather
             this.Bindings.Update();
             MyProgressRing.IsActive = false;
             MyScrollViewer.Visibility = Visibility.Visible;
+
+            // Update Tiles
+            var tileXml = await GetTileXml();
+
+            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
+            int i = 0;
+            foreach (IXmlNode item in tileTextAttributes)
+            {
+                if (i % 2 == 0)
+                {
+                    item.InnerText = Data.Weather.Basic.City;
+                }
+                else
+                {
+                    item.InnerText = Convert.ToInt32(Data.Weather.Now.Tmp) + "℃";
+                }
+                i++;
+            }
+            XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
+            foreach (IXmlNode item in tileImageAttributes)
+            {
+                (item as XmlElement).SetAttribute("src", Data.Weather.Now.Cond.Icon);
+            }
+            var tileNotification = new TileNotification(tileXml);
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+        }
+
+        public static async Task<XmlDocument> GetTileXml()
+        {
+            var uri = new Uri("ms-appx:///Assets/TilesTemplate.xml");
+            var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+            var tileXml = await XmlDocument.LoadFromFileAsync(file);
+            return tileXml;
         }
 
         private void TipsGridView_ItemClick(object sender, ItemClickEventArgs e)

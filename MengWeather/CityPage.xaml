@@ -33,8 +33,10 @@
             <Setter Property="Height" Value="2"/>
         </Style>
     </Page.Resources>
-    <Grid Background="HotPink">
-        <ProgressRing Name="MyProgressRing" IsActive="False" 
+    <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}">
+        <ProgressRing Name="MyProgressRing" 
+                      IsActive="False" 
+                      Foreground="White"
                       Height="100" Width="100"/>
         <ScrollViewer Name="MyScrollViewer" VerticalScrollBarVisibility="Hidden">
             <Grid MaxWidth="600">
@@ -128,7 +130,8 @@
                                   ItemsSource="{x:Bind Data.Weather.DailyForecast}" 
                                   Width="1160"
                                   IsItemClickEnabled="True"
-                                  ItemClick="WeatherGridView_ItemClick">
+                                  ItemClick="WeatherGridView_ItemClick"
+                                  SelectionMode="None">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:Daily_forecast">
                                     <StackPanel Width="160">
@@ -200,7 +203,8 @@
                                   Width="600"
                                   IsItemClickEnabled="True"
                                   ItemClick="TipsGridView_ItemClick"
-                                  Margin=" 0 12 0 0">
+                                  Margin=" 0 12 0 0"
+                                  SelectionMode="None">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="data:OneSuggestion">
                                     <StackPanel Height="80" Width="80">

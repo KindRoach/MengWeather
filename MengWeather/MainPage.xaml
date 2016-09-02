@@ -12,13 +12,14 @@
 
 
 
-    <Grid Background="HotPink">
+    <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}"
+          Loaded="BackgroundGrid_Loaded">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Pivot Name="myPivot" MaxWidth="900" SelectionChanged="myPivot_SelectionChanged"/>
-        <Frame Name="SettingFrame" Visibility="Collapsed" Width="900" HorizontalAlignment="Center"/>
+        <Frame Name="SettingFrame" Visibility="Collapsed"/>
         <AppBar Grid.Row="1"
                 VerticalAlignment="Bottom"
                 ClosedDisplayMode="Compact"
