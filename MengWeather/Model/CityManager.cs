@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using NGeoHash.Portable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
