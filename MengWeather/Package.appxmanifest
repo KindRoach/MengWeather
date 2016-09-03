@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="84a90e23-4a0b-4369-903d-1ad416dc4a1d" Publisher="CN=Kind Roach" Version="1.0.0.0" />
+  <Identity Name="20411.58048E262ED6D" Publisher="CN=82243F86-9E71-4404-BB4A-49F5678EA996" Version="1.1.2.0" />
   <mp:PhoneIdentity PhoneProductId="84a90e23-4a0b-4369-903d-1ad416dc4a1d" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>MengWeather</DisplayName>
-    <PublisherDisplayName>Kind Roach</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <DisplayName>萌天气</DisplayName>
+    <PublisherDisplayName>张森辉</PublisherDisplayName>
+    <Logo>Assets\Logo\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MengWeather.App">
-      <uap:VisualElements DisplayName="萌天气" Square150x150Logo="Assets\Logo\Square150x150Logo.png" Square44x44Logo="Assets\Logo\Square44x44Logo.png" Description="MengWeather" BackgroundColor="dodgerBlue">
+      <uap:VisualElements DisplayName="萌天气" Square150x150Logo="Assets\Logo\Square150x150Logo.png" Square44x44Logo="Assets\Logo\Square44x44Logo.png" Description="提供实时天气状况、未来七天天气预报，暂仅支持中国国内城市。" BackgroundColor="dodgerBlue">
         <uap:DefaultTile Wide310x150Logo="Assets\Logo\Wide310x150Logo.png" Square310x310Logo="Assets\Logo\Square310x310Logo.png" Square71x71Logo="Assets\Logo\Square71x71Logo.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />
