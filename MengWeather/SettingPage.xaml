@@ -23,7 +23,7 @@
                 <StackPanel VerticalAlignment="Center" Margin="0 24 0 0">
                     <TextBlock Style="{StaticResource TextStyle}">萌天气</TextBlock>
                     <TextBlock Style="{StaticResource TextStyle}">版本 1.0.0.0</TextBlock>
-                    <TextBlock Style="{StaticResource TextStyle}">@Kind Roach</TextBlock>
+                    <TextBlock Style="{StaticResource TextStyle}">@张森辉</TextBlock>
                 </StackPanel>
             </StackPanel>
             
