@@ -11,6 +11,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Notifications;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,12 +30,12 @@ namespace MengWeather
     public sealed partial class CityPage : Page
     {
         public WeatherViewModel Data { get; set; }
-        public string CityID { get; set; }
+        public CityInfo City { get; set; }
 
-        public CityPage(string newCityID)
+        public CityPage(CityInfo newCity)
         {
             this.InitializeComponent();
-            CityID = newCityID;
+            City = newCity;
             Data = new WeatherViewModel();
             WeatherInfoStackPanel.Visibility = Visibility.Collapsed;
         }
@@ -48,7 +49,17 @@ namespace MengWeather
         {
             MyScrollViewer.Visibility = Visibility.Collapsed;
             MyProgressRing.IsActive = true;
-            Data.Weather = await WeatherManager.GetWeather(CityID);
+
+            try
+            {
+                Data.Weather = await WeatherManager.GetWeather(City);
+            }
+            catch (Exception)
+            {
+                await new MessageDialog("数据错误").ShowAsync();
+                return;
+            }
+
             this.Bindings.Update();
             MyProgressRing.IsActive = false;
             MyScrollViewer.Visibility = Visibility.Visible;
@@ -62,18 +73,18 @@ namespace MengWeather
             {
                 if (i % 2 == 0)
                 {
-                    item.InnerText = Data.Weather.Basic.City;
+                    item.InnerText = Data.Weather.City.City;
                 }
                 else
                 {
-                    item.InnerText = Convert.ToInt32(Data.Weather.Now.Tmp) + "℃";
+                    item.InnerText = Data.Weather.Now.Tmp;
                 }
                 i++;
             }
             XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
             foreach (IXmlNode item in tileImageAttributes)
             {
-                (item as XmlElement).SetAttribute("src", Data.Weather.Now.Cond.Icon);
+                (item as XmlElement).SetAttribute("src", Data.Weather.Now.Icon);
             }
             var tileNotification = new TileNotification(tileXml);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
@@ -87,34 +98,36 @@ namespace MengWeather
             return tileXml;
         }
 
-        private void TipsGridView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void TipsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var suggestion = e.ClickedItem as OneSuggestion;
+            var suggestion = e.ClickedItem as MySuggestion;
             TipsTextBlock.Text = suggestion.Brief + '\n' + suggestion.Txt;
             if (suggestion.Name == "防晒指数")
             {
                 TipsTextBlock.Text = "紫外线" + TipsTextBlock.Text;
             }
+            // 好像scrollView高度的调节有延迟，所以立马下滚没有反应，故延迟100ms
+            await Task.Delay(100);
+            MyScrollViewer.ChangeView(null, MyScrollViewer.VerticalOffset + 1000, null);
         }
 
         private void WeatherGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var weather = e.ClickedItem as Daily_forecast;
+            var weather = e.ClickedItem as DailyForecast;
             WeatherInfoStackPanel.Visibility = Visibility.Visible;
-            RainTextBlock.Text = "降雨概率：" + weather.Pop + "%";
-            WindTextBlock.Text = "风向：" + weather.Wind.Dir;
-            HumTextBlock.Text = "湿度：" + weather.Hum + "%";
-            SrTextBlock.Text = weather.Astro.Sr;
-            SsTextBlock.Text = weather.Astro.Ss;
-
+            RainTextBlock.Text = weather.Pop;
+            WindTextBlock.Text = weather.Wind;
+            HumTextBlock.Text = weather.Hum;
+            SrTextBlock.Text = weather.Sr;
+            SsTextBlock.Text = weather.Ss;
         }
     }
 
     public class WeatherViewModel : INotifyPropertyChanged
     {
-        private HeWeather weather;
+        private MyWeather weather;
 
-        public HeWeather Weather
+        public MyWeather Weather
         {
             get { return weather; }
             set

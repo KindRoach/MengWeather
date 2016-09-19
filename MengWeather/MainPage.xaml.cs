@@ -34,6 +34,8 @@ namespace MengWeather
         public HashSet<string> AddedCity { get; set; }
         public ApplicationDataContainer LocalSetting { get; set; }
         public int LastPviotSelectedIndex { get; set; }
+        public string ShowLocateDialogAnyMore { get; set; }
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -50,11 +52,20 @@ namespace MengWeather
             try
             {
                 var pos = await LocationManager.GetLocation();
-                locatedCity = await CityManager.GetCity(pos.Coordinate.Longitude, pos.Coordinate.Latitude);
+                var lat = pos.Coordinate.Point.Position.Latitude;
+                var lon = pos.Coordinate.Point.Position.Longitude;
+                locatedCity = CityManager.GetCity(lon, lat);
             }
             catch (Exception)
             {
-                await new MessageDialog("定位失败，请确保在打开设备的定位功能，并在设置中允许本应用的访问您的位置，您也可以手动添加城市。").ShowAsync();
+                if (!LocalSetting.Values.ContainsKey(nameof(ShowLocateDialogAnyMore)))
+                {
+                    ShowLocateFailDialog();
+                }
+                else if (LocalSetting.Values[nameof(ShowLocateDialogAnyMore)].ToString() == "Yes")
+                {
+                    ShowLocateFailDialog();
+                }
             }
 
             AddCityOnPivotWithWriteSetting(locatedCity);
@@ -71,10 +82,28 @@ namespace MengWeather
             }
 
             SettingFrame.Navigate(typeof(SettingPage));
-
         }
 
-        private async void AddCityOnPivot(CityInfo newCity)
+        private async void ShowLocateFailDialog()
+        {
+            var dialog = new ContentDialog();
+            dialog.Title = $"定位失败，无法自动所在城市，请确保在打开设备的定位功能，并在设置中允许本应用的访问您的位置。" + '\n' + "您也可以手动添加城市。";
+            dialog.PrimaryButtonText = "确认";
+            dialog.SecondaryButtonText = "不再提醒";
+            ContentDialogResult result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                ShowLocateDialogAnyMore = "Yes";
+                LocalSetting.Values[nameof(ShowLocateDialogAnyMore)] = ShowLocateDialogAnyMore;
+            }
+            else
+            {
+                ShowLocateDialogAnyMore = "NoMore";
+                LocalSetting.Values[nameof(ShowLocateDialogAnyMore)] = ShowLocateDialogAnyMore;
+            }
+        }
+
+        private void AddCityOnPivot(CityInfo newCity)
         {
             var pivotItem = new PivotItem();
             var textBlock = new TextBlock();
@@ -82,23 +111,14 @@ namespace MengWeather
             // 设置Header的字体颜色
             textBlock.Foreground = new SolidColorBrush(Colors.Gray);
             pivotItem.Header = textBlock;
-            try
-            {
-                var cityPage = new CityPage(newCity.ID);
-                pivotItem.Content = cityPage;
-                myPivot.Items.Add(pivotItem);
-                AddedCity.Add(newCity.ID);
-            }
-            catch (Exception)
-            {
-                await new MessageDialog("暂时无法连接服务器，请稍后再试！").ShowAsync();
-                throw;
-            }
+            var cityPage = new CityPage(newCity);
+            pivotItem.Content = cityPage;
+            myPivot.Items.Add(pivotItem);
+            AddedCity.Add(newCity.ID);
         }
 
         private async void AddCityOnPivotWithWriteSetting(CityInfo newCity)
         {
-
             if (newCity.ID == "null")
             {
                 return;
@@ -163,14 +183,12 @@ namespace MengWeather
             SettingButton.IsCompact = true;
         }
 
-
         private async void Refresh(object sender, RoutedEventArgs e)
         {
             var item = myPivot.SelectedItem as PivotItem;
             var page = item.Content as CityPage;
             await page.RefreshWeather();
         }
-
 
         // 添加城市
         private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -212,7 +230,6 @@ namespace MengWeather
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
             var city = e.ClickedItem as CityInfo;
             AddCityOnPivotWithWriteSetting(city);
         }
@@ -229,21 +246,21 @@ namespace MengWeather
             else
             {
                 var dialog = new ContentDialog();
-                dialog.Title = $"确定删除{(myPivot.SelectedItem as PivotItem).Header}？";
+                dialog.Title = $"确定从关注列表中删除{((myPivot.SelectedItem as PivotItem).Header as TextBlock).Text}？";
                 dialog.PrimaryButtonText = "确认";
                 dialog.SecondaryButtonText = "取消";
                 ContentDialogResult result = await dialog.ShowAsync();
                 if (result == ContentDialogResult.Primary)
                 {
-                    var selectedCity = (myPivot.SelectedItem as PivotItem).Content as CityPage;
-                    AddedCity.Remove(selectedCity.CityID);
+                    var selectedCity = ((myPivot.SelectedItem as PivotItem).Content as CityPage).City;
+                    AddedCity.Remove(selectedCity.ID);
                     myPivot.Items.Remove(myPivot.SelectedItem);
                     if (LocalSetting.Values.ContainsKey(nameof(AddedCity)))
                     {
                         List<CityInfo> cities = ReadSetting();
                         for (int i = 0; i < cities.Count; i++)
                         {
-                            if (cities[i].ID == selectedCity.CityID)
+                            if (cities[i].ID == selectedCity.ID)
                             {
                                 cities.RemoveAt(i);
                             }
@@ -279,11 +296,13 @@ namespace MengWeather
             {
                 SettingFrame.Visibility = Visibility.Visible;
                 (sender as AppBarButton).Icon = new SymbolIcon(Symbol.Back);
+                SettingButton.Label = "返回";
             }
             else
             {
                 SettingFrame.Visibility = Visibility.Collapsed;
                 (sender as AppBarButton).Icon = new SymbolIcon(Symbol.Setting);
+                SettingButton.Label = "设置";
             }
         }
 

@@ -10,25 +10,23 @@
     xmlns:data="using:MengWeather.Model"
     Loaded="_rootPage_Loaded">
 
-
-
     <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}"
           Loaded="BackgroundGrid_Loaded">
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Pivot Name="myPivot" MaxWidth="900" SelectionChanged="myPivot_SelectionChanged"/>
-        <Frame Name="SettingFrame" Visibility="Collapsed"/>
+        <Pivot Name="myPivot" MaxWidth="900" SelectionChanged="myPivot_SelectionChanged" />
+        <Frame Name="SettingFrame" Visibility="Collapsed" />
         <AppBar Grid.Row="1"
                 VerticalAlignment="Bottom"
                 ClosedDisplayMode="Compact"
                 Opening="AppBar_Opening"
                 Closing="AppBar_Closing">
-            <StackPanel Orientation="Horizontal" 
+            <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top">
-                <AppBarButton Name="RefreshButton" Label="刷新" IsCompact="True" Icon="Refresh" Click="Refresh"/>
+                <AppBarButton Name="RefreshButton" Label="刷新" IsCompact="True" Icon="Refresh" Click="Refresh" />
                 <AppBarButton Name="AddButton" Label="添加" IsCompact="True" Icon="Add">
                     <AppBarButton.Flyout>
                         <Flyout x:Name="MyFlyout" Opened="Flyout_Opened">
@@ -38,8 +36,8 @@
                                                 QueryIcon="Map"
                                                 Width="160"
                                                 TextChanged="AutoSuggestBox_TextChanged"
-                                                QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
-                                <ListView Height="400" 
+                                                QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
+                                <ListView Height="400"
                                           Margin="0 12 0 0"
                                           Header="结果："
                                           IsItemClickEnabled="True"
@@ -48,10 +46,10 @@
                                     <ListView.ItemTemplate>
                                         <DataTemplate x:DataType="data:CityInfo">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{x:Bind City}"/>
-                                                <TextBlock Text="("/>
-                                                <TextBlock Text="{x:Bind Prov}"/>
-                                                <TextBlock Text=")"/>
+                                                <TextBlock Text="{x:Bind City}" />
+                                                <TextBlock Text="(" />
+                                                <TextBlock Text="{x:Bind Prov}" />
+                                                <TextBlock Text=")" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
@@ -60,19 +58,17 @@
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton Name="DeleteButton" 
-                              Label="删除" 
-                              IsCompact="True" 
+                <AppBarButton Name="DeleteButton"
+                              Label="删除"
+                              IsCompact="True"
                               Icon="Delete"
-                              Click="DeleteButton_Click"/>
-                <AppBarButton Name="SettingButton" 
+                              Click="DeleteButton_Click" />
+                <AppBarButton Name="SettingButton"
                               Label="设置"
                               IsCompact="True"
                               Icon="Setting"
-                              Click="SettingButton_Click"/>
-
+                              Click="SettingButton_Click" />
             </StackPanel>
         </AppBar>
     </Grid>
 </Page>
-

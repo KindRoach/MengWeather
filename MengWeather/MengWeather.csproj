@@ -17,7 +17,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>MengWeather_StoreKey.pfx</PackageCertificateKeyFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>3ECA21ACE0A25C228624B5F6214BF1B0EFB82E30</PackageCertificateThumbprint>
@@ -105,6 +105,8 @@
     </Compile>
     <Compile Include="Model\CityManager.cs" />
     <Compile Include="Model\LocationManager.cs" />
+    <Compile Include="Model\MyWeather.cs" />
+    <Compile Include="Model\RootObject.cs" />
     <Compile Include="Model\WeatherManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CityPage.xaml.cs">
@@ -243,9 +245,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
-      <Name>Windows Mobile Extensions for the UWP %28WindowsMobile, Version=10.0.10586.0%29</Name>
-    </SDKReference>
     <SDKReference Include="WindowsMobile, Version=10.0.14393.0">
       <Name>Windows Mobile Extensions for the UWP %28WindowsMobile, Version=10.0.14393.0%29</Name>
     </SDKReference>

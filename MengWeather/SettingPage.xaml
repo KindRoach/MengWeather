@@ -8,32 +8,36 @@
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="TextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="White" />
         </Style>
     </Page.Resources>
-    <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <TextBlock FontSize="36" Margin="12 12 0 0" Foreground="White">关于</TextBlock>
-        <StackPanel Grid.Row="1" Padding="12">
-            <StackPanel Orientation="Horizontal" Margin="-36">
-                <Image Source="Assets/Logo/Square310x310Logo.scale-400.png" Height="160" Width="160" HorizontalAlignment="Left"/>
-                <StackPanel VerticalAlignment="Center" Margin="0 24 0 0">
-                    <TextBlock Style="{StaticResource TextStyle}">萌天气</TextBlock>
-                    <TextBlock Style="{StaticResource TextStyle}">版本 1.1.0.0</TextBlock>
-                    <TextBlock Style="{StaticResource TextStyle}">@张森辉</TextBlock>
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" VerticalScrollMode="Enabled">
+        <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="36" Margin="12 12 0 0" Foreground="White">关于</TextBlock>
+            <StackPanel Grid.Row="1" Padding="12">
+                <StackPanel Orientation="Horizontal" Margin="-36">
+                    <Image Source="Assets/Logo/Square310x310Logo.scale-400.png" Height="160" Width="160" HorizontalAlignment="Left" />
+                    <StackPanel VerticalAlignment="Center" Margin="0 24 0 0">
+                        <TextBlock Style="{StaticResource TextStyle}">萌天气</TextBlock>
+                        <TextBlock Style="{StaticResource TextStyle}">版本 1.1.7.0</TextBlock>
+                        <TextBlock Style="{StaticResource TextStyle}">@张森辉</TextBlock>
+                    </StackPanel>
                 </StackPanel>
+
+                <TextBlock Style="{StaticResource TextStyle}" Margin="0 12 0 0">反馈&amp;联系作者</TextBlock>
+                <TextBlock Style="{StaticResource TextStyle}">kindroach@hotmail.com</TextBlock>
+                <TextBlock Style="{StaticResource TextStyle}" Margin="0 12 0 0">本程序开源，仅供学习与交流</TextBlock>
+                <TextBlock Style="{StaticResource TextStyle}" >不用于任何商业用途</TextBlock>
+                <TextBlock Style="{StaticResource TextStyle}" >如果侵犯您的合法权益</TextBlock>
+                <TextBlock Style="{StaticResource TextStyle}" >请及时联系本人以第一时间删除</TextBlock>
+                <HyperlinkButton Content="访问GitHub" NavigateUri="https://github.com/KindRoach/MengWeather" Foreground="White" />
+                <TextBlock Style="{StaticResource TextStyle}" Margin="0 12 0 0">更新日志</TextBlock>
+                <TextBlock Name="updateText" Style="{StaticResource TextStyle}" />
             </StackPanel>
-            
-            <TextBlock Style="{StaticResource TextStyle}" Margin="0 12 0 0">反馈&amp;联系作者</TextBlock>
-            <TextBlock Style="{StaticResource TextStyle}">kindroach@hotmail.com</TextBlock>
-            <TextBlock Style="{StaticResource TextStyle}" Margin="0 12 0 0">本程序开源，仅供学习与交流</TextBlock>
-            <TextBlock Style="{StaticResource TextStyle}" >不用于任何商业用途</TextBlock>
-            <TextBlock Style="{StaticResource TextStyle}" >如果侵犯您的合法权益</TextBlock>
-            <TextBlock Style="{StaticResource TextStyle}" >请及时联系本人以第一时间删除</TextBlock>
-            <HyperlinkButton Content="访问GitHub" NavigateUri="https://github.com/KindRoach/MengWeather" Foreground="White"/>
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </Page>

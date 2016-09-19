@@ -18,11 +18,10 @@ namespace MengWeather.Model
                 new Uri(@"ms-appx:///Assets/CityLocationData/CitiesLocation.txt"));
             string json = await FileIO.ReadTextAsync(cityData);
             Cities = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<List<CityInfo>>(json));
-            
         }
 
-        public static async Task<CityInfo> GetCity(double longitude, double latitude)
-        {            
+        public static CityInfo GetCity(double longitude, double latitude)
+        {
             longitude = Math.Round(longitude, 4);
             latitude = Math.Round(latitude, 4);
             int cityIndex = 0;
@@ -35,7 +34,7 @@ namespace MengWeather.Model
                     minDistance = newDistance;
                     cityIndex = i;
                 }
-            }            
+            }
             return Cities[cityIndex];
         }
 
@@ -46,7 +45,6 @@ namespace MengWeather.Model
             double c = Math.Sqrt(a * a + b * b);
             return c;
         }
-
     }
 
     public class CityInfo
@@ -58,6 +56,4 @@ namespace MengWeather.Model
         public string ID { get; set; }
         public string Cnty { get; set; }
     }
-
-
 }
