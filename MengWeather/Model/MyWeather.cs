@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace MengWeather.Model
         public MyAlarm Alarm { get; set; }
         public LiveWeather Now { get; set; }
         public List<DailyForecast> DailyForecastes { get; set; }
+        public List<HourlyForecast> HourlyForecastes { get; set; }
         public List<MySuggestion> Suggestions { get; set; }
 
         public MyWeather()
@@ -21,7 +23,9 @@ namespace MengWeather.Model
             Alarm = new MyAlarm();
             Now = new LiveWeather();
             DailyForecastes = new List<DailyForecast>();
+            HourlyForecastes = new List<HourlyForecast>();
             Suggestions = new List<MySuggestion>();
+
         }
     }
 
@@ -62,6 +66,13 @@ namespace MengWeather.Model
         public string Hum { get; set; }
         public string Pop { get; set; }
         public string Wind { get; set; }
+    }
+
+    public class HourlyForecast
+    {
+        public string Hour { get; set; }
+        public string Tmp { get; set; }
+        public string Pop { get; set; }
     }
 
     public class MySuggestion

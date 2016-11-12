@@ -21,6 +21,7 @@
             <Setter Property="FontFamily" Value="Microsoft YaHei" />
             <Setter Property="FontSize" Value="24" />
             <Setter Property="Foreground" Value="White" />
+            <Setter Property="Margin" Value="4 4 0 0" />
         </Style>
         <Style x:Key="TextStyle3" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Microsoft YaHei" />
@@ -41,6 +42,7 @@
         <ScrollViewer Name="MyScrollViewer" VerticalScrollBarVisibility="Hidden">
             <Grid MaxWidth="600">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -81,18 +83,57 @@
 
                 <StackPanel Grid.Row="3"
                             Margin="0 12 0 0"
+                            >
+                    <Rectangle Style="{StaticResource LineStyle}" />
+                    <RelativePanel>
+                        <TextBlock Text="小时预报"
+                                   Style="{StaticResource TextStyle2}" />
+                        <TextBlock Text="降水概率" 
+                                   Margin="0 0 8 0"
+                                   RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
+                                   Style="{StaticResource TextStyle3}"/>
+                    </RelativePanel>
+                    <ListView ItemsSource="{x:Bind Data.Weather.HourlyForecastes}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:HourlyForecast">
+                                <RelativePanel>
+                                    <TextBlock Text="{x:Bind Hour}"
+                                                   Style="{StaticResource TextStyle3}"
+                                                   RelativePanel.AlignLeftWithPanel="True"/>
+                                    <TextBlock Text="{x:Bind Tmp}"
+                                                   Style="{StaticResource TextStyle3}"
+                                                   HorizontalAlignment="Center"
+                                                   RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                                    <TextBlock Text="{x:Bind Pop}"
+                                                   Style="{StaticResource TextStyle3}"
+                                                   RelativePanel.AlignRightWithPanel="True"/>
+                                </RelativePanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel Grid.Row="4"
+                            Margin="0 12 0 0"
                             HorizontalAlignment="Center">
                     <Rectangle Style="{StaticResource LineStyle}" />
-                    <TextBlock Text="未来7天"
+                    <TextBlock Text="未来6天"
                                Style="{StaticResource TextStyle2}" />
-                    <ScrollViewer HorizontalScrollMode="Enabled"
+                    <ScrollViewer Name="DailyScrollViewer"
+                                  HorizontalScrollMode="Enabled"
                                   HorizontalScrollBarVisibility="Hidden"
                                   VerticalScrollMode="Disabled"
                                   VerticalScrollBarVisibility="Hidden"
                                   Margin="0 12 0 0">
                         <GridView Name="WeatherGridView"
                                   ItemsSource="{x:Bind Data.Weather.DailyForecastes}"
-                                  Width="1160"
+                                  Width="1165"
                                   IsItemClickEnabled="True"
                                   ItemClick="WeatherGridView_ItemClick"
                                   SelectionMode="None">
@@ -144,12 +185,13 @@
                     </RelativePanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="4"
+                <StackPanel Grid.Row="5"
                             HorizontalAlignment="Stretch">
                     <Rectangle Style="{StaticResource LineStyle}" />
                     <TextBlock Text="生活贴士"
                                Style="{StaticResource TextStyle2}" />
-                    <ScrollViewer HorizontalAlignment="Left"
+                    <ScrollViewer Name="SuggestionScrollViewer"
+                                  HorizontalAlignment="Left"
                                   HorizontalScrollMode="Enabled"
                                   HorizontalScrollBarVisibility="Hidden"
                                   VerticalScrollMode="Disabled"

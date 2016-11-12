@@ -42,13 +42,12 @@ namespace MengWeather.Model
             myWeather.Now.Hum = $"湿度：{apiWeather.Now.Hum}%";
             myWeather.Now.Tmp = apiWeather.Now.Tmp + "℃";
             myWeather.Now.Wind = "风向：" + apiWeather.Now.Wind.Dir;
+            myWeather.Now.Brief = $"{apiWeather.Now.Cond.Txt}   {apiWeather.Now.Tmp}℃";
 
             if (apiWeather.Aqi != null)
             {
                 myWeather.Now.Aqi = $"空气质量：{apiWeather.Aqi.City.Qlty} {apiWeather.Aqi.City.Aqi}";
             }
-
-            myWeather.Now.Brief = $"{apiWeather.Now.Cond.Txt}   {apiWeather.Now.Tmp}℃";
 
             foreach (var item in apiWeather.DailyForecast)
             {
@@ -68,6 +67,19 @@ namespace MengWeather.Model
                 dailyForecast.Wind = "风向：" + item.Wind.Dir;
 
                 myWeather.DailyForecastes.Add(dailyForecast);
+            }
+
+            // 因为api7天预报里包含了今天
+            myWeather.DailyForecastes[0].Date = "今天";
+
+            foreach (var item in apiWeather.HourlyForecast)
+            {
+                var hourlyForecast = new HourlyForecast();
+                hourlyForecast.Hour = item.Date.Substring(11, 2) + "时";
+                hourlyForecast.Pop = $"{item.Pop}%";
+                hourlyForecast.Tmp = $"{item.Tmp}℃";
+
+                myWeather.HourlyForecastes.Add(hourlyForecast);
             }
 
             myWeather.Suggestions.Add(new MySuggestion()

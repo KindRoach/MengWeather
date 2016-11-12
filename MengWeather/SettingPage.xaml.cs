@@ -25,6 +25,14 @@ namespace MengWeather
         public SettingPage()
         {
             this.InitializeComponent();
+            updateText.Text = updateText.Text + "2016/11/6" + '\n';
+            updateText.Text = updateText.Text + "1.更正了未来七天包括今天的错误" + '\n';
+            updateText.Text = updateText.Text + "2.尝试修复闪退的bug，如果仍然闪退可卸载并重新安装应用" + '\n';
+            updateText.Text = updateText.Text + '\n';
+            updateText.Text = updateText.Text + "2016/10/1" + '\n';
+            updateText.Text = updateText.Text + "1.添加了小时预报，因为api接口仅提供了温度和降水概率，所以比较简陋_(:з」∠)_" + '\n';
+            updateText.Text = updateText.Text + "2.修复了跟新日志显示不全的bug" + '\n';
+            updateText.Text = updateText.Text + '\n';
             updateText.Text = updateText.Text + "2016/9/16" + '\n';
             updateText.Text = updateText.Text + "1.修复了部分地区因为缺少空气质量数据而导致应用崩溃的bug" + '\n';
             updateText.Text = updateText.Text + '\n';

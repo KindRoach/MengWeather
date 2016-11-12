@@ -31,6 +31,7 @@ namespace MengWeather
     {
         public WeatherViewModel Data { get; set; }
         public CityInfo City { get; set; }
+        public Pivot FatherPivot { get; set; }
 
         public CityPage(CityInfo newCity)
         {
@@ -54,14 +55,15 @@ namespace MengWeather
             {
                 Data.Weather = await WeatherManager.GetWeather(City);
             }
-            catch (Exception)
+            catch (Exception exp)
             {
-                await new MessageDialog("数据错误").ShowAsync();
+                await new MessageDialog("数据错误，请稍后刷新 " + exp.Message).ShowAsync();
                 return;
             }
 
             this.Bindings.Update();
             MyProgressRing.IsActive = false;
+
             MyScrollViewer.Visibility = Visibility.Visible;
 
             // Update Tiles
@@ -121,6 +123,7 @@ namespace MengWeather
             SrTextBlock.Text = weather.Sr;
             SsTextBlock.Text = weather.Ss;
         }
+
     }
 
     public class WeatherViewModel : INotifyPropertyChanged

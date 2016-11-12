@@ -20,10 +20,10 @@
             <TextBlock FontSize="36" Margin="12 12 0 0" Foreground="White">关于</TextBlock>
             <StackPanel Grid.Row="1" Padding="12">
                 <StackPanel Orientation="Horizontal" Margin="-36">
-                    <Image Source="Assets/Logo/Square310x310Logo.scale-400.png" Height="160" Width="160" HorizontalAlignment="Left" />
+                    <Image Source="Assets/Logo.png" Height="160" Width="160" HorizontalAlignment="Left" />
                     <StackPanel VerticalAlignment="Center" Margin="0 24 0 0">
                         <TextBlock Style="{StaticResource TextStyle}">萌天气</TextBlock>
-                        <TextBlock Style="{StaticResource TextStyle}">版本 1.1.7.0</TextBlock>
+                        <TextBlock Style="{StaticResource TextStyle}">版本 1.2.1.0</TextBlock>
                         <TextBlock Style="{StaticResource TextStyle}">@张森辉</TextBlock>
                     </StackPanel>
                 </StackPanel>
@@ -36,7 +36,7 @@
                 <TextBlock Style="{StaticResource TextStyle}" >请及时联系本人以第一时间删除</TextBlock>
                 <HyperlinkButton Content="访问GitHub" NavigateUri="https://github.com/KindRoach/MengWeather" Foreground="White" />
                 <TextBlock Style="{StaticResource TextStyle}" Margin="0 12 0 0">更新日志</TextBlock>
-                <TextBlock Name="updateText" Style="{StaticResource TextStyle}" />
+                <TextBlock Name="updateText" Style="{StaticResource TextStyle}" TextWrapping="WrapWholeWords"/>
             </StackPanel>
         </Grid>
     </ScrollViewer>
