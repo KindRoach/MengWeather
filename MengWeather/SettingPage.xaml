@@ -23,7 +23,7 @@
                     <Image Source="Assets/Logo.png" Height="160" Width="160" HorizontalAlignment="Left" />
                     <StackPanel VerticalAlignment="Center" Margin="0 24 0 0">
                         <TextBlock Style="{StaticResource TextStyle}">萌天气</TextBlock>
-                        <TextBlock Style="{StaticResource TextStyle}">版本 1.2.1.0</TextBlock>
+                        <TextBlock Style="{StaticResource TextStyle}">版本 1.2.3.0</TextBlock>
                         <TextBlock Style="{StaticResource TextStyle}">@张森辉</TextBlock>
                     </StackPanel>
                 </StackPanel>

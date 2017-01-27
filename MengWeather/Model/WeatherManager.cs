@@ -13,10 +13,10 @@ namespace MengWeather.Model
     {
         public static async Task<MyWeather> GetWeather(CityInfo city)
         {
-            string apikey = "7490cb3d3f894591be89e77aea057e89";
+            string apikey = "1f47da2eb3ba4b3fb17adc272bcf68f1";
             string cityId = city.ID;
             var http = new HttpClient();
-            var response = await http.GetAsync($"https://api.heweather.com/x3/weather?cityid={cityId}&key={apikey}");
+            var response = await http.GetAsync($"https://free-api.heweather.com/x3/weather?cityid={cityId}&key={apikey}");
             var json = await response.Content.ReadAsStringAsync();
             var apiWeather = JsonConvert.DeserializeObject<RootObject>(json).HeWeatheres[0];
 

@@ -25,6 +25,9 @@ namespace MengWeather
         public SettingPage()
         {
             this.InitializeComponent();
+            updateText.Text = updateText.Text + "2017/1/27" + '\n';
+            updateText.Text = updateText.Text + "原来的API接口挂掉了，续命中……" + '\n';
+            updateText.Text = updateText.Text + '\n';
             updateText.Text = updateText.Text + "2016/11/6" + '\n';
             updateText.Text = updateText.Text + "1.更正了未来七天包括今天的错误" + '\n';
             updateText.Text = updateText.Text + "2.尝试修复闪退的bug，如果仍然闪退可卸载并重新安装应用" + '\n';
