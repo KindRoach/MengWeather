@@ -8,69 +8,115 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:data="using:MengWeather.Model"
+    xmlns:pr="using:PullToRefresh.UWP"    
     Loaded="_rootPage_Loaded">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}"
-          Loaded="BackgroundGrid_Loaded">
+          Name="backgroundGrid"
+          Loaded="backgroundGrid_Loaded"
+          Padding="8">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Pivot Name="myPivot" 
-               MaxWidth="900" 
-               SelectionChanged="myPivot_SelectionChanged" />
-        <Frame Name="SettingFrame" Visibility="Collapsed" />
-        <AppBar Grid.Row="1"
-                VerticalAlignment="Bottom"
-                ClosedDisplayMode="Compact"
-                Opening="AppBar_Opening"
-                Closing="AppBar_Closing">
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top">
-                <AppBarButton Name="RefreshButton" Label="刷新" IsCompact="True" Icon="Refresh" Click="Refresh" />
-                <AppBarButton Name="AddButton" Label="添加" IsCompact="True" Icon="Add">
-                    <AppBarButton.Flyout>
-                        <Flyout x:Name="MyFlyout" Opened="Flyout_Opened">
-                            <StackPanel>
-                                <AutoSuggestBox Name="MyAutoSuggestBox"
-                                                PlaceholderText="搜索城市"
-                                                QueryIcon="Map"
-                                                Width="160"
-                                                TextChanged="AutoSuggestBox_TextChanged"
-                                                QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
-                                <ListView Height="300"
-                                          Margin="0 12 0 0"
-                                          Header="结果："
-                                          IsItemClickEnabled="True"
-                                          ItemClick="ListView_ItemClick"
-                                          ItemsSource="{x:Bind SearchResult}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate x:DataType="data:CityInfo">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{x:Bind City}" />
-                                                <TextBlock Text="(" />
-                                                <TextBlock Text="{x:Bind Prov}" />
-                                                <TextBlock Text=")" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+        <StackPanel Orientation="Horizontal">
+            <Button Style="{StaticResource ButtonStyle}"
+                    Name="splitViewButton"
+                    Click="splitViewButton_Click">
+                <FontIcon FontFamily="Segoe MDL2 Assets"
+                      Glyph="&#xE1C4;"
+                          Margin="2 0 0 0"
+                      Style="{StaticResource FontIconStyle}"/>
+            </Button>
+            <Button Style="{StaticResource ButtonStyle}"
+                    Name="goBackButton"
+                    Click="goBackButton_Click"
+                    Visibility="Collapsed">
+                <FontIcon FontFamily="Segoe MDL2 Assets"
+                      Glyph="&#xE96F;"
+                          Margin="2 0 0 0"
+                      Style="{StaticResource FontIconStyle}"/>
+            </Button>
+            <TextBlock Name="cityNameTextBlock" 
+                       Margin="12 0 0 0"
+                       Style="{StaticResource TextStyle2}"
+                       Text="{x:Bind Model.SelectedCity.City,Mode=OneWay}"/>
+        </StackPanel>
+        <SplitView Grid.Row="1"
+                   Name="splitView"
+                   DisplayMode="Inline"
+                   OpenPaneLength="120"
+                   PaneBackground="#3FFFFFFF">
+            <SplitView.Pane>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ListView Name="cityListView"
+                              ItemsSource="{x:Bind Model.CityList,Mode=OneWay}"
+                              IsItemClickEnabled="True"
+                              ItemClick="cityListView_ItemClick">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:CityInfo">
+                                <TextBlock Style="{StaticResource TextStyle2}" Text="{x:Bind City}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Rectangle Grid.Row="1"
+                               Style="{StaticResource LineStyle}"
+                               Width="112" Margin="4"/>
+                    <ListView Name="buttonListview"
+                              Grid.Row="2"
+                              IsItemClickEnabled="True"
+                              ItemClick="buttonListview_ItemClick">
+                        <ListView.Items>
+                            <StackPanel Orientation="Horizontal" Name="AddItem">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE109;" 
+                                              Style="{StaticResource FontIconStyle}"
+                                              Margin="0 0 8 0"/>
+                                <TextBlock Style="{StaticResource TextStyle3}"
+                                               Margin="0 -2 0 0" >添加</TextBlock>
                             </StackPanel>
-                        </Flyout>
-                    </AppBarButton.Flyout>
-                </AppBarButton>
-                <AppBarButton Name="DeleteButton"
-                              Label="删除"
-                              IsCompact="True"
-                              Icon="Delete"
-                              Click="DeleteButton_Click" />
-                <AppBarButton Name="SettingButton"
-                              Label="设置"
-                              IsCompact="True"
-                              Icon="Setting"
-                              Click="SettingButton_Click" />
-            </StackPanel>
-        </AppBar>
+                            <StackPanel Orientation="Horizontal" Name="DeleteItem">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;" 
+                                              Style="{StaticResource FontIconStyle}"
+                                              Margin="0 0 8 0"/>
+                                <TextBlock Style="{StaticResource TextStyle3}"
+                                               Margin="0 -2 0 0" >删除</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Name="RefreshItem">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE117;" 
+                                              Style="{StaticResource FontIconStyle}"
+                                              Margin="0 0 8 0"/>
+                                <TextBlock Style="{StaticResource TextStyle3}"
+                                               Margin="0 -2 0 0" >刷新</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Name="SettingItem">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE115;" 
+                                              Style="{StaticResource FontIconStyle}"
+                                              Margin="0 0 8 0"/>
+                                <TextBlock Style="{StaticResource TextStyle3}"
+                                               Margin="0 -2 0 0" >设置</TextBlock>
+                            </StackPanel>
+                        </ListView.Items>
+                    </ListView>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <Frame Name="mainPageFrame" Margin="12"/>
+                    <ProgressRing Name="progressRing" Style="{StaticResource ProgressRingStyle}"/>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
     </Grid>
 </Page>

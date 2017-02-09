@@ -1,24 +1,17 @@
 ﻿using MengWeather.Model;
-using Newtonsoft.Json;
+using MengWeather.Model.ViewModel;
+using MengWeather.Model.Weather.Displayed;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage;
+using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Windows.UI;
-using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -29,284 +22,180 @@ namespace MengWeather
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public List<string> Suggestions { get; set; }
-        public ObservableCollection<CityInfo> SearchResult { get; set; }
-        public HashSet<string> AddedCity { get; set; }
-        public ApplicationDataContainer LocalSetting { get; set; }
-        public int LastPviotSelectedIndex { get; set; }
-        public string ShowLocateDialogAnyMore { get; set; }
+        public MainPageViewModel Model { get; set; }
+        public HashSet<CityInfo> AddedCity { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
-            Suggestions = new List<string>();
-            SearchResult = new ObservableCollection<CityInfo>();
-            AddedCity = new HashSet<string>();
-            LocalSetting = ApplicationData.Current.LocalSettings;
+            Model = new MainPageViewModel();
+            Model.CityList = new ObservableCollection<CityInfo>();
+            AddedCity = new HashSet<CityInfo>();
         }
 
         private async void _rootPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await CityManager.ReadData();
-            CityInfo locatedCity = new Model.CityInfo() { ID = "null" };
+            progressRing.IsActive = true;
+            ReadSetting();
+            Geoposition pos = null;
             try
             {
-                var pos = await LocationManager.GetLocation();
-                var lat = pos.Coordinate.Point.Position.Latitude;
-                var lon = pos.Coordinate.Point.Position.Longitude;
-                locatedCity = CityManager.GetCity(lon, lat);
+                pos = await LocationManager.GetLocation();
             }
             catch (Exception)
             {
-                if (!LocalSetting.Values.ContainsKey(nameof(ShowLocateDialogAnyMore)))
-                {
-                    ShowLocateFailDialog();
-                }
-                else if (LocalSetting.Values[nameof(ShowLocateDialogAnyMore)].ToString() == "Yes")
-                {
-                    ShowLocateFailDialog();
-                }
+                LocationManager.ShowLocateFailDialog();
             }
 
-            AddCityOnPivotWithWriteSetting(locatedCity);
-            if (LocalSetting.Values.ContainsKey(nameof(AddedCity)))
-            {
-                List<CityInfo> cities = ReadSetting();
-                foreach (var item in cities)
-                {
-                    if (item.ID != locatedCity.ID)
-                    {
-                        AddCityOnPivot(item);
-                    }
-                }
-            }
-
-            SettingFrame.Navigate(typeof(SettingPage));
+            var lat = pos.Coordinate.Point.Position.Latitude;
+            var lon = pos.Coordinate.Point.Position.Longitude;
+            var locatedCity = await CityManager.GetCity(lon, lat);
+            AddCity(locatedCity);
         }
 
-        private async void ShowLocateFailDialog()
+        private void ReadSetting()
         {
-            var dialog = new ContentDialog();
-            dialog.Title = $"定位失败，无法自动所在城市，请确保在打开设备的定位功能，并在设置中允许本应用的访问您的位置。" + '\n' + "您也可以手动添加城市。";
-            dialog.PrimaryButtonText = "确认";
-            dialog.SecondaryButtonText = "不再提醒";
-            ContentDialogResult result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            List<CityInfo> settingList = null;
+            try
             {
-                ShowLocateDialogAnyMore = "Yes";
-                LocalSetting.Values[nameof(ShowLocateDialogAnyMore)] = ShowLocateDialogAnyMore;
+                settingList = SettingManager.GetAddedCity();
             }
-            else
-            {
-                ShowLocateDialogAnyMore = "NoMore";
-                LocalSetting.Values[nameof(ShowLocateDialogAnyMore)] = ShowLocateDialogAnyMore;
-            }
-        }
-
-        private void AddCityOnPivot(CityInfo newCity)
-        {
-            var pivotItem = new PivotItem();
-            var textBlock = new TextBlock();
-            textBlock.Text = newCity.City;
-            // 设置Header的字体颜色
-            textBlock.Foreground = new SolidColorBrush(Colors.Gray);
-            pivotItem.Header = textBlock;
-            var cityPage = new CityPage(newCity);
-            pivotItem.Content = cityPage;
-            myPivot.Items.Add(pivotItem);
-            AddedCity.Add(newCity.ID);
-        }
-
-        private async void AddCityOnPivotWithWriteSetting(CityInfo newCity)
-        {
-            if (newCity.ID == "null")
+            catch (Exception)
             {
                 return;
             }
-            if (AddedCity.Contains(newCity.ID))
+            foreach (var item in settingList)
             {
-                await new MessageDialog("该城市已添加！").ShowAsync();
-            }
-            else
-            {
-                MyFlyout.Hide();
-                AddCityOnPivot(newCity);
-                myPivot.SelectedIndex = myPivot.Items.Count - 1;
-                if (LocalSetting.Values.ContainsKey(nameof(AddedCity)))
-                {
-                    List<CityInfo> cities = ReadSetting();
-                    cities.Add(newCity);
-                    WriteSetting(cities);
-                }
-                else
-                {
-                    List<CityInfo> cities = new List<Model.CityInfo>();
-                    cities.Add(newCity);
-                    WriteSetting(cities);
-                }
+                AddCity(item);
             }
         }
 
-        public List<CityInfo> ReadSetting()
+        private void splitViewButton_Click(object sender, RoutedEventArgs e)
         {
-            if (LocalSetting.Values.ContainsKey(nameof(AddedCity)))
+            splitView.IsPaneOpen = !splitView.IsPaneOpen;
+        }
+
+
+
+        public async Task ChangeCity(CityInfo newCity)
+        {
+            TileManager.UpdateTile();
+            progressRing.IsActive = true;
+            Model.SelectedCity = newCity;
+            Weather_Displayed weather = null;
+            try
             {
-                string json = LocalSetting.Values[nameof(AddedCity)].ToString();
-                var cities = JsonConvert.DeserializeObject<List<CityInfo>>(json);
-                return cities;
+                weather = await WeatherManager.GetWeather(newCity);
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception("没有找到设置项");
+                WeatherManager.ShowConnectFailDialog(ex);
+                return;
             }
-        }
-
-        public void WriteSetting(List<CityInfo> cities)
-        {
-            string json = JsonConvert.SerializeObject(cities);
-            LocalSetting.Values[nameof(AddedCity)] = json;
-        }
-
-        private void AppBar_Opening(object sender, object e)
-        {
-            RefreshButton.IsCompact = false;
-            AddButton.IsCompact = false;
-            DeleteButton.IsCompact = false;
-            SettingButton.IsCompact = false;
-        }
-
-        private void AppBar_Closing(object sender, object e)
-        {
-            RefreshButton.IsCompact = true;
-            AddButton.IsCompact = true;
-            DeleteButton.IsCompact = true;
-            SettingButton.IsCompact = true;
-        }
-
-        private async void Refresh(object sender, RoutedEventArgs e)
-        {
-            var item = myPivot.SelectedItem as PivotItem;
-            var page = item.Content as CityPage;
-            await page.RefreshWeather();
-        }
-
-        // 添加城市
-        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            finally
             {
-                Suggestions = CityManager.Cities.
-                    Where(x => x.City.StartsWith(sender.Text)).
-                    Select(x => $"{x.City}({x.Prov})").ToList<string>();   //上海（直辖市）
-
-                MyAutoSuggestBox.ItemsSource = Suggestions;
+                progressRing.IsActive = false;
             }
+            var tuple = new Tuple<Weather_Displayed, MainPage>(weather, this);
+            mainPageFrame.Navigate(typeof(WeatherPage), tuple);
         }
 
-        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        public async void AddCity(CityInfo newCity)
         {
-            var resultList = CityManager.Cities.Where(x => $"{x.City}({x.Prov})".StartsWith(sender.Text)).ToList<CityInfo>();
-            SearchResult.Clear();
-            if (resultList.Count == 1)              //回车能够直接添加，而不需要再次点击listView
+            if (AddedCity.Add(newCity))
             {
-                var city = resultList[0];
-                AddCityOnPivotWithWriteSetting(resultList[0]);
+                Model.CityList.Add(newCity);
+                SettingManager.SetAddedCity(new List<CityInfo>(AddedCity));
             }
-            else
+            await ChangeCity(newCity);
+        }
+
+        private async void cityListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            splitView.IsPaneOpen = false;
+            var clickedCity = e.ClickedItem as CityInfo;
+            if (clickedCity == null)
             {
-                foreach (var item in resultList)
-                {
-                    SearchResult.Add(item);
-                }
+                throw new Exception("Clicked item is not CityInfo");
             }
+            if (clickedCity.Equals(Model.SelectedCity)) return;
+            await ChangeCity(clickedCity);
         }
 
-        private void Flyout_Opened(object sender, object e)
+        private async void buttonListview_ItemClick(object sender, ItemClickEventArgs e)
         {
-            MyAutoSuggestBox.Focus(FocusState.Keyboard);
-            MyAutoSuggestBox.Text = "";
-            SearchResult.Clear();
-        }
-
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var city = e.ClickedItem as CityInfo;
-            AddCityOnPivotWithWriteSetting(city);
-        }
-
-        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (myPivot.SelectedIndex == 0)
+            splitView.IsPaneOpen = false;
+            var clickedItem = e.ClickedItem as StackPanel;
+            if (clickedItem == null)
             {
+                throw new Exception("Clicked item is not CityInfo");
+            }
+            if (clickedItem.Name == "AddItem")
+            {
+                mainPageFrame.Navigate(typeof(AddCityPage), this);
+                cityNameTextBlock.Text = "";
+            }
+            else if (clickedItem.Name == "SettingItem")
+            {
+                mainPageFrame.Navigate(typeof(SettingPage));
+                cityNameTextBlock.Text = "设置";
+                goBackButton.Visibility = Visibility.Visible;
+                splitViewButton.Visibility = Visibility.Collapsed;
+            }
+            else if (clickedItem.Name == "DeleteItem")
+            {
+                if (mainPageFrame.CurrentSourcePageType != typeof(WeatherPage)) return;
                 var dialog = new ContentDialog();
-                dialog.Title = $"不能删除第一个城市!";
-                dialog.PrimaryButtonText = "确认";
-                ContentDialogResult result = await dialog.ShowAsync();
-            }
-            else
-            {
-                var dialog = new ContentDialog();
-                dialog.Title = $"确定从关注列表中删除{((myPivot.SelectedItem as PivotItem).Header as TextBlock).Text}？";
+                dialog.Title = $"确定从关注列表中删除 {Model.SelectedCity.City}？";
+                if (Model.CityList.Count == 0) dialog.Title = "关注列表已为空";
                 dialog.PrimaryButtonText = "确认";
                 dialog.SecondaryButtonText = "取消";
                 ContentDialogResult result = await dialog.ShowAsync();
                 if (result == ContentDialogResult.Primary)
                 {
-                    var selectedCity = ((myPivot.SelectedItem as PivotItem).Content as CityPage).City;
-                    AddedCity.Remove(selectedCity.ID);
-                    myPivot.Items.Remove(myPivot.SelectedItem);
-                    if (LocalSetting.Values.ContainsKey(nameof(AddedCity)))
+                    Model.CityList.Remove(Model.SelectedCity);
+                    AddedCity.Remove(Model.SelectedCity);
+                    SettingManager.SetAddedCity(Model.CityList.ToList());
+                    if (Model.CityList.Count == 0)
                     {
-                        List<CityInfo> cities = ReadSetting();
-                        for (int i = 0; i < cities.Count; i++)
-                        {
-                            if (cities[i].ID == selectedCity.ID)
-                            {
-                                cities.RemoveAt(i);
-                            }
-                        }
-                        WriteSetting(cities);
+                        mainPageFrame.Navigate(typeof(AddCityPage), this);
+                        Model.SelectedCity = new CityInfo() { City = "" };
                     }
+                    else
+                        await ChangeCity(Model.CityList[0]);
                 }
             }
+            else // Refresh
+            {
+                if (mainPageFrame.CurrentSourcePageType != typeof(WeatherPage)) return;
+                await ChangeCity(Model.SelectedCity);
+            }
         }
 
-        // 切换城市后Header颜色分别作出明暗调整
-        private void myPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void goBackButton_Click(object sender, RoutedEventArgs e)
         {
-            var pivotItem = myPivot.Items[LastPviotSelectedIndex] as PivotItem;
-            if (pivotItem != null)
-            {
-                var textBlock = pivotItem.Header as TextBlock;
-                textBlock.Foreground = new SolidColorBrush(Colors.Gray);
-            }
-            pivotItem = myPivot.SelectedItem as PivotItem;
-            if (pivotItem != null)
-            {
-                var textBlock = pivotItem.Header as TextBlock;
-                textBlock.Foreground = new SolidColorBrush(Colors.White);
-            }
-
-            LastPviotSelectedIndex = myPivot.SelectedIndex;
+            mainPageFrame.GoBack();
+            cityNameTextBlock.Text = Model.SelectedCity.City;
+            goBackButton.Visibility = Visibility.Collapsed;
+            splitViewButton.Visibility = Visibility.Visible;
         }
 
-        private void SettingButton_Click(object sender, RoutedEventArgs e)
+        public void GoHourlyPage(Weather_Displayed weatherDisplayed)
         {
-            if (SettingFrame.Visibility == Visibility.Collapsed)
-            {
-                SettingFrame.Visibility = Visibility.Visible;
-                (sender as AppBarButton).Icon = new SymbolIcon(Symbol.Back);
-                SettingButton.Label = "返回";
-            }
-            else
-            {
-                SettingFrame.Visibility = Visibility.Collapsed;
-                (sender as AppBarButton).Icon = new SymbolIcon(Symbol.Setting);
-                SettingButton.Label = "设置";
-            }
+            mainPageFrame.Navigate(typeof(HourlyPage), weatherDisplayed);
+            goBackButton.Visibility = Visibility.Visible;
+            splitViewButton.Visibility = Visibility.Collapsed;
+            cityNameTextBlock.Text += "(未来48小时)";
+            splitView.IsPaneOpen = false;
         }
 
-        private void BackgroundGrid_Loaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 设置状态栏颜色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void backgroundGrid_Loaded(object sender, RoutedEventArgs e)
         {
             if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
             {

@@ -1,0 +1,50 @@
+﻿<Page
+    x:Class="MengWeather.AddCityPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MengWeather"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:data="using:MengWeather.Model"    
+    Loaded="Page_Loaded"
+    MaxWidth="600"
+    MinWidth="320">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}">
+        <StackPanel Margin="12">
+            <TextBlock Text="添加新地点：" Style="{StaticResource TextStyle2}"
+                       Margin="0 0 0 8"/>
+            <AutoSuggestBox QueryIcon="Find"
+                            Name="autoSuggestBox"
+                            TextChanged="autoSuggestBox_TextChanged"
+                            QuerySubmitted="autoSuggestBox_QuerySubmitted"
+                            PlaceholderText="搜索"/>
+
+
+            <ListView Name="listView"
+                      Height="300"
+                      IsItemClickEnabled="True"
+                      ItemClick="listView_ItemClick"
+                      ItemsSource="{x:Bind SearchResult}"
+                      Margin="0 12 0 0">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:CityInfo">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{x:Bind City}" Style="{StaticResource TextStyle2}"/>
+                            <TextBlock Text="(" Style="{StaticResource TextStyle2}"/>
+                            <TextBlock Text="{x:Bind Prov}" Style="{StaticResource TextStyle2}"/>
+                            <TextBlock Text=")" Style="{StaticResource TextStyle2}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+    </Grid>
+</Page>

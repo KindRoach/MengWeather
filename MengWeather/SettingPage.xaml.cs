@@ -1,10 +1,13 @@
-﻿using System;
+﻿using MengWeather.Model;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,33 +25,94 @@ namespace MengWeather
     /// </summary>
     public sealed partial class SettingPage : Page
     {
+        public int LastPviotSelectedIndex { get; set; } = 0;
+        public ObservableCollection<CityInfo> AddedCity { get; set; }
+        public CityInfo TileCity { get; set; }
         public SettingPage()
         {
             this.InitializeComponent();
-            updateText.Text = updateText.Text + "2017/1/27" + '\n';
-            updateText.Text = updateText.Text + "原来的API接口挂掉了，续命中……" + '\n';
-            updateText.Text = updateText.Text + '\n';
-            updateText.Text = updateText.Text + "2016/11/6" + '\n';
-            updateText.Text = updateText.Text + "1.更正了未来七天包括今天的错误" + '\n';
-            updateText.Text = updateText.Text + "2.尝试修复闪退的bug，如果仍然闪退可卸载并重新安装应用" + '\n';
-            updateText.Text = updateText.Text + '\n';
-            updateText.Text = updateText.Text + "2016/10/1" + '\n';
-            updateText.Text = updateText.Text + "1.添加了小时预报，因为api接口仅提供了温度和降水概率，所以比较简陋_(:з」∠)_" + '\n';
-            updateText.Text = updateText.Text + "2.修复了跟新日志显示不全的bug" + '\n';
-            updateText.Text = updateText.Text + '\n';
-            updateText.Text = updateText.Text + "2016/9/16" + '\n';
-            updateText.Text = updateText.Text + "1.修复了部分地区因为缺少空气质量数据而导致应用崩溃的bug" + '\n';
-            updateText.Text = updateText.Text + '\n';
-            updateText.Text = updateText.Text + "2016/9/16" + '\n';
-            updateText.Text = updateText.Text + "1.后台优化（我默默改了好多代码，而你萌都看不到 ಥ_ಥ）" + '\n';
-            updateText.Text = updateText.Text + "2.未来7天预报的气温更改为：最小值~最大值" + '\n';
-            updateText.Text = updateText.Text + "3.点击生活贴士后，屏幕将自动滚动至低端" + '\n';
-            updateText.Text = updateText.Text + "4.布局细节的调整" + '\n';
-            updateText.Text = updateText.Text + '\n';
-            updateText.Text = updateText.Text + "2016/9/6" + '\n';
-            updateText.Text = updateText.Text + "1.修复了删除城市时确认对话框出现的乱码" + '\n';
-            updateText.Text = updateText.Text + "2.更正了进入设置页面后返回按钮的说明文字" + '\n';
-            updateText.Text = updateText.Text + "3.定位失败的信息可以选择不再提示" + '\n';
+            pivot.SelectedIndex = 0;
+            ReadSetting();
+            WriteUpdateLog();
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var pivotItem = pivot.Items[LastPviotSelectedIndex] as PivotItem;
+            if (pivotItem != null)
+            {
+                var textBlock = pivotItem.Header as TextBlock;
+                textBlock.Foreground = new SolidColorBrush(Colors.Gray);
+            }
+            pivotItem = pivot.SelectedItem as PivotItem;
+            if (pivotItem != null)
+            {
+                var textBlock = pivotItem.Header as TextBlock;
+                textBlock.Foreground = new SolidColorBrush(Colors.White);
+            }
+            LastPviotSelectedIndex = pivot.SelectedIndex;
+        }
+
+        private void WriteUpdateLog()
+        {
+            updateText.Text = updateText.Text + "2017/2/8" + Environment.NewLine;
+            updateText.Text = updateText.Text + "1.更换了新的API，现在已经可以提供未来48小时的小时级预报" + Environment.NewLine;
+            updateText.Text = updateText.Text + "2.重新设计UI布局，增加了汉堡菜单，避免了原来切换城市与滑动“未来7天”的操作冲突" + Environment.NewLine;
+            updateText.Text = updateText.Text + "3.实现了下拉刷新功能" + Environment.NewLine;
+            updateText.Text = updateText.Text + "4.现已可以设置磁贴显示地点" + Environment.NewLine;
+            updateText.Text = updateText.Text + "2016/11/6" + Environment.NewLine;
+            updateText.Text = updateText.Text + "1.更正了未来七天包括今天的错误" + Environment.NewLine;
+            updateText.Text = updateText.Text + "2.尝试修复闪退的bug，如果仍然闪退可卸载并重新安装应用" + Environment.NewLine;
+            updateText.Text = updateText.Text + Environment.NewLine;
+            updateText.Text = updateText.Text + "2016/10/1" + Environment.NewLine;
+            updateText.Text = updateText.Text + "1.添加了小时预报，因为api接口仅提供了温度和降水概率，所以比较简陋_(:з」∠)_" + Environment.NewLine;
+            updateText.Text = updateText.Text + "2.修复了跟新日志显示不全的bug" + Environment.NewLine;
+            updateText.Text = updateText.Text + Environment.NewLine;
+            updateText.Text = updateText.Text + "2016/9/16" + Environment.NewLine;
+            updateText.Text = updateText.Text + "1.修复了部分地区因为缺少空气质量数据而导致应用崩溃的bug" + Environment.NewLine;
+            updateText.Text = updateText.Text + Environment.NewLine;
+            updateText.Text = updateText.Text + "2016/9/16" + Environment.NewLine;
+            updateText.Text = updateText.Text + "1.后台优化（我默默改了好多代码，而你萌都看不到 ಥ_ಥ）" + Environment.NewLine;
+            updateText.Text = updateText.Text + "2.未来7天预报的气温更改为：最小值~最大值" + Environment.NewLine;
+            updateText.Text = updateText.Text + "3.点击生活贴士后，屏幕将自动滚动至低端" + Environment.NewLine;
+            updateText.Text = updateText.Text + "4.布局细节的调整" + Environment.NewLine;
+            updateText.Text = updateText.Text + Environment.NewLine;
+            updateText.Text = updateText.Text + "2016/9/6" + Environment.NewLine;
+            updateText.Text = updateText.Text + "1.修复了删除城市时确认对话框出现的乱码" + Environment.NewLine;
+            updateText.Text = updateText.Text + "2.更正了进入设置页面后返回按钮的说明文字" + Environment.NewLine;
+            updateText.Text = updateText.Text + "3.定位失败的信息可以选择不再提示" + Environment.NewLine;
+        }
+
+        private void ReadSetting()
+        {
+            try
+            {
+                AddedCity = new ObservableCollection<CityInfo>(SettingManager.GetAddedCity());
+                TileCity = SettingManager.GetTileCity();
+            }
+            catch (Exception)
+            {
+                AddedCity = new ObservableCollection<CityInfo>();
+            }
+            finally
+            {
+                AddedCity.Add(new CityInfo() { City = "自动定位" });
+            }
+        }
+
+        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectCity = comboBox.SelectedItem as CityInfo;
+            if (selectCity == null)
+            {
+                throw new Exception("Clicked item is not CityInfo");
+            }
+            SettingManager.SetTileCity(selectCity);
+            tileCityTextBlock.Text = "设置已保存";
+            if (selectCity.City == "自动定位")
+            {
+                tileCityTextBlock.Text += Environment.NewLine + "请确保打开定位功能";
+            }
         }
     }
 }
