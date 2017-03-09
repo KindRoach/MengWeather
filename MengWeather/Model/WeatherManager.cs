@@ -5,10 +5,7 @@ using MengWeather.Model.Weather.Suggestion;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
@@ -45,7 +42,6 @@ namespace MengWeather.Model
             {
                 throw new Exception("connect wrong." + ex.Message, ex);
             }
-
         }
 
         public static async void ShowConnectFailDialog(Exception ex)
@@ -206,7 +202,7 @@ namespace MengWeather.Model
             else if (aqi > 100) txt = "轻度污染";
             else if (aqi > 50) txt = "良";
             else txt = "优";
-            return $"空气质量：{txt} {Math.Round(aqi, 0)}";
+            return $"AQI：{txt} {Math.Round(aqi, 0)}";
         }
 
         private static string GetHumidity(double humidity)
@@ -255,7 +251,6 @@ namespace MengWeather.Model
             return $"{precipitation}降水：{Math.Round(mm, 1)}mm";
         }
 
-
         /// <summary>
         /// 为了给雨雪加上强度描述，请务必在GetPrecipitation()方法后调用
         /// </summary>
@@ -272,42 +267,52 @@ namespace MengWeather.Model
                     skycon = "晴";
                     icon = "Assets/WeatherIcon/100.png";
                     break;
+
                 case "CLEAR_NIGHT":
                     skycon = "晴";
                     icon = "Assets/WeatherIcon/100.png";
                     break;
+
                 case "PARTLY_CLOUDY_DAY":
                     skycon = "多云";
                     icon = "Assets/WeatherIcon/103.png";
                     break;
+
                 case "PARTLY_CLOUDY_NIGHT":
                     skycon = "多云";
                     icon = "Assets/WeatherIcon/103.png";
                     break;
+
                 case "CLOUDY":
                     skycon = "阴";
                     icon = "Assets/WeatherIcon/101.png";
                     break;
+
                 case "RAIN":
                     skycon = "雨";
                     icon = "Assets/WeatherIcon/305.png";
                     break;
+
                 case "SNOW":
                     skycon = "雪";
                     icon = "Assets/WeatherIcon/400.png";
                     break;
+
                 case "WIND":
                     skycon = "风";
                     icon = "Assets/WeatherIcon/205.png";
                     break;
+
                 case "FOG":
                     skycon = "雾";
                     icon = "Assets/WeatherIcon/501.png";
                     break;
+
                 case "HAZE":
                     skycon = "霾";
                     icon = "Assets/WeatherIcon/502.png";
                     break;
+
                 default:
                     skycon = weather;
                     icon = "Assets/WeatherIcon/999.png";

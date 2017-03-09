@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MengWeather.Model.ViewModel
 {
@@ -13,6 +8,7 @@ namespace MengWeather.Model.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ObservableCollection<CityInfo> cityList;
+
         public ObservableCollection<CityInfo> CityList
         {
             get { return cityList; }
@@ -23,7 +19,6 @@ namespace MengWeather.Model.ViewModel
                     PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(CityList)));
             }
         }
-
 
         private CityInfo selectedCity;
 
@@ -37,6 +32,5 @@ namespace MengWeather.Model.ViewModel
                     PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCity)));
             }
         }
-
     }
 }

@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace MengWeather.Model
@@ -12,6 +9,7 @@ namespace MengWeather.Model
     {
         private static ApplicationDataContainer localSetting =
             ApplicationData.Current.LocalSettings;
+
         public static void SetTileCity(CityInfo city)
         {
             var cityJson = JsonConvert.SerializeObject(city);
@@ -74,8 +72,5 @@ namespace MengWeather.Model
         {
             localSetting.Values["ShowLFDAnyMore"] = show;
         }
-
     }
-
-
 }

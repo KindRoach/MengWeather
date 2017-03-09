@@ -6,15 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:displayed="using:MengWeather.Model.Weather.Displayed"
-    xmlns:pr="using:PullToRefresh.UWP"    
-    mc:Ignorable="d"    
-    MaxWidth="600"
-    MinWidth="320">
+    xmlns:pr="using:PullToRefresh.UWP"
+    mc:Ignorable="d">
 
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ResourceDictionary.xaml"/>
+                <ResourceDictionary Source="ResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -33,13 +31,13 @@
                     </Grid.RowDefinitions>
 
                     <Image Source="{x:Bind Path=Model.Weather.Now.Icon}"
-                       Height="240" Width="240"/>
+                       Height="240" Width="240" />
 
                     <StackPanel Grid.Row="1" HorizontalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{x:Bind Model.Weather.Now.Skycon}"
-                               Style="{StaticResource TextStyle1}" 
-                                   Margin="0 0 24 0"/>
+                               Style="{StaticResource TextStyle1}"
+                                   Margin="0 0 24 0" />
                             <TextBlock Text="{x:Bind Model.Weather.Now.Temperature}"
                                Style="{StaticResource TextStyle1}" />
                         </StackPanel>
@@ -62,28 +60,27 @@
                                Style="{StaticResource TextStyle3}" />
                         </StackPanel>
                         <StackPanel RelativePanel.AlignRightWithPanel="True"
-                                RelativePanel.AlignBottomWithPanel="True" >
+                                RelativePanel.AlignBottomWithPanel="True">
                             <TextBlock Text="{x:Bind Model.Weather.Now.Pm25}"
-                                   Style="{StaticResource TextStyle3}" 
-                                   TextAlignment="Right"/>
+                                   Style="{StaticResource TextStyle3}"
+                                   TextAlignment="Right" />
                             <TextBlock Text="{x:Bind Model.Weather.Now.Aqi}"
                                    Style="{StaticResource TextStyle3}"
-                                   TextAlignment="Right"/>
+                                   TextAlignment="Right" />
                         </StackPanel>
                     </RelativePanel>
 
                     <StackPanel Grid.Row="3"
-                            Margin="0 12 0 0"
-                            >
+                            Margin="0 12 0 0">
                         <Rectangle Style="{StaticResource LineStyle}" />
                         <RelativePanel>
                             <TextBlock Text="小时预报"
                                    Style="{StaticResource TextStyle2}" />
-                            <TextBlock Text="降水(mm/h)" 
+                            <TextBlock Text="降水(mm/h)"
                                    Margin="0 0 8 0"
                                    RelativePanel.AlignBottomWithPanel="True"
                                    RelativePanel.AlignRightWithPanel="True"
-                                   Style="{StaticResource TextStyle3}"/>
+                                   Style="{StaticResource TextStyle3}" />
                         </RelativePanel>
                         <ListView ItemsSource="{x:Bind Model.Weather.HourlyForecates_8}">
                             <ListView.ItemContainerStyle>
@@ -96,19 +93,19 @@
                                     <RelativePanel>
                                         <TextBlock Text="{x:Bind Time}"
                                                    Style="{StaticResource TextStyle3}"
-                                                   RelativePanel.AlignLeftWithPanel="True"/>
+                                                   RelativePanel.AlignLeftWithPanel="True" />
                                         <StackPanel Orientation="Horizontal"
                                                 HorizontalAlignment="Center"
                                                 RelativePanel.AlignHorizontalCenterWithPanel="True">
                                             <TextBlock Text="{x:Bind Skycon}"
                                                    Style="{StaticResource TextStyle3}"
-                                                   Margin="0 0 8 0"/>
+                                                   Margin="0 0 8 0" />
                                             <TextBlock Text="{x:Bind Temperature}"
-                                                   Style="{StaticResource TextStyle3}"/>
+                                                   Style="{StaticResource TextStyle3}" />
                                         </StackPanel>
                                         <TextBlock Text="{x:Bind Precipitation}"
                                                    Style="{StaticResource TextStyle3}"
-                                                   RelativePanel.AlignRightWithPanel="True"/>
+                                                   RelativePanel.AlignRightWithPanel="True" />
                                     </RelativePanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -118,9 +115,9 @@
                             Name="hourlyButton"
                             Click="hourlyButton_Click">
                             <StackPanel Orientation="Horizontal" Name="SettingItem">
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" 
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;"
                                               Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0"/>
+                                              Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
                                                Margin="0 -2 0 0" >详情</TextBlock>
                             </StackPanel>
@@ -170,10 +167,10 @@
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock Name="rainTextBlock"
                                        Style="{StaticResource TextStyle3}" />
-                                <TextBlock Name="windTextBlock"
+                                <TextBlock Name="humTextBlock"
                                        Margin="0 4 0 0"
                                        Style="{StaticResource TextStyle3}" />
-                                <TextBlock Name="humTextBlock"
+                                <TextBlock Name="windTextBlock"
                                        Margin="0 4 0 0"
                                        Style="{StaticResource TextStyle3}" />
                                 <TextBlock Name="AqiTextBlock"

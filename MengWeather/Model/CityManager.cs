@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -17,6 +14,7 @@ namespace MengWeather.Model
         public double Lat { get; set; }
         public string ID { get; set; }
         public string Cnty { get; set; }
+
         public CityInfo GetCopy()
         {
             var other = new CityInfo();
@@ -91,6 +89,7 @@ namespace MengWeather.Model
         {
             return x * Math.PI / 180;
         }
+
         private static double StandardizeLat(double x)
         {
             if (x > 0) x = 90 - x;
@@ -98,5 +97,4 @@ namespace MengWeather.Model
             return x * Math.PI / 180;
         }
     }
-
 }

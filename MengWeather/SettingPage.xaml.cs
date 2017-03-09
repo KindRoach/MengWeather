@@ -1,20 +1,9 @@
 ﻿using MengWeather.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -28,6 +17,7 @@ namespace MengWeather
         public int LastPviotSelectedIndex { get; set; } = 0;
         public ObservableCollection<CityInfo> AddedCity { get; set; }
         public CityInfo TileCity { get; set; }
+
         public SettingPage()
         {
             this.InitializeComponent();
@@ -55,11 +45,15 @@ namespace MengWeather
 
         private void WriteUpdateLog()
         {
+            updateText.Text = updateText.Text + "2017/3/9" + Environment.NewLine;
+            updateText.Text = updateText.Text + "1.UI布局调整，修复了部分页面显示不全、内容重叠的bug" + Environment.NewLine;
+            updateText.Text = updateText.Text + Environment.NewLine;
             updateText.Text = updateText.Text + "2017/2/8" + Environment.NewLine;
             updateText.Text = updateText.Text + "1.更换了新的API，现在已经可以提供未来48小时的小时级预报" + Environment.NewLine;
             updateText.Text = updateText.Text + "2.重新设计UI布局，增加了汉堡菜单，避免了原来切换城市与滑动“未来7天”的操作冲突" + Environment.NewLine;
             updateText.Text = updateText.Text + "3.实现了下拉刷新功能" + Environment.NewLine;
             updateText.Text = updateText.Text + "4.现已可以设置磁贴显示地点" + Environment.NewLine;
+            updateText.Text = updateText.Text + Environment.NewLine;
             updateText.Text = updateText.Text + "2016/11/6" + Environment.NewLine;
             updateText.Text = updateText.Text + "1.更正了未来七天包括今天的错误" + Environment.NewLine;
             updateText.Text = updateText.Text + "2.尝试修复闪退的bug，如果仍然闪退可卸载并重新安装应用" + Environment.NewLine;

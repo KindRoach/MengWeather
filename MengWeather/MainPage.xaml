@@ -3,18 +3,16 @@
     x:Class="MengWeather.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MengWeather"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:data="using:MengWeather.Model"
-    xmlns:pr="using:PullToRefresh.UWP"    
     Loaded="_rootPage_Loaded">
 
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ResourceDictionary.xaml"/>
+                <ResourceDictionary Source="ResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -23,8 +21,8 @@
           Loaded="backgroundGrid_Loaded"
           Padding="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <Button Style="{StaticResource ButtonStyle}"
@@ -33,7 +31,7 @@
                 <FontIcon FontFamily="Segoe MDL2 Assets"
                       Glyph="&#xE1C4;"
                           Margin="2 0 0 0"
-                      Style="{StaticResource FontIconStyle}"/>
+                      Style="{StaticResource FontIconStyle}" />
             </Button>
             <Button Style="{StaticResource ButtonStyle}"
                     Name="goBackButton"
@@ -42,12 +40,12 @@
                 <FontIcon FontFamily="Segoe MDL2 Assets"
                       Glyph="&#xE96F;"
                           Margin="2 0 0 0"
-                      Style="{StaticResource FontIconStyle}"/>
+                      Style="{StaticResource FontIconStyle}" />
             </Button>
-            <TextBlock Name="cityNameTextBlock" 
+            <TextBlock Name="cityNameTextBlock"
                        Margin="12 0 0 0"
                        Style="{StaticResource TextStyle2}"
-                       Text="{x:Bind Model.SelectedCity.City,Mode=OneWay}"/>
+                       Text="{x:Bind Model.SelectedCity.City,Mode=OneWay}" />
         </StackPanel>
         <SplitView Grid.Row="1"
                    Name="splitView"
@@ -57,9 +55,9 @@
             <SplitView.Pane>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <ListView Name="cityListView"
                               ItemsSource="{x:Bind Model.CityList,Mode=OneWay}"
@@ -67,43 +65,43 @@
                               ItemClick="cityListView_ItemClick">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:CityInfo">
-                                <TextBlock Style="{StaticResource TextStyle2}" Text="{x:Bind City}"/>
+                                <TextBlock Style="{StaticResource TextStyle2}" Text="{x:Bind City}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                     <Rectangle Grid.Row="1"
                                Style="{StaticResource LineStyle}"
-                               Width="112" Margin="4"/>
+                               Width="112" Margin="4" />
                     <ListView Name="buttonListview"
                               Grid.Row="2"
                               IsItemClickEnabled="True"
                               ItemClick="buttonListview_ItemClick">
                         <ListView.Items>
                             <StackPanel Orientation="Horizontal" Name="AddItem">
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE109;" 
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE109;"
                                               Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0"/>
+                                              Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
                                                Margin="0 -2 0 0" >添加</TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Name="DeleteItem">
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;" 
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;"
                                               Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0"/>
+                                              Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
                                                Margin="0 -2 0 0" >删除</TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Name="RefreshItem">
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE117;" 
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE117;"
                                               Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0"/>
+                                              Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
                                                Margin="0 -2 0 0" >刷新</TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Name="SettingItem">
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE115;" 
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE115;"
                                               Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0"/>
+                                              Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
                                                Margin="0 -2 0 0" >设置</TextBlock>
                             </StackPanel>
@@ -113,8 +111,8 @@
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid>
-                    <Frame Name="mainPageFrame" Margin="12"/>
-                    <ProgressRing Name="progressRing" Style="{StaticResource ProgressRingStyle}"/>
+                    <Frame Name="mainPageFrame" Margin="12" MaxWidth="600" MinWidth="240" />
+                    <ProgressRing Name="progressRing" Style="{StaticResource ProgressRingStyle}" />
                 </Grid>
             </SplitView.Content>
         </SplitView>

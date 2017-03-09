@@ -6,13 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:data="using:MengWeather.Model"
-    MaxWidth="600"
-    MinWidth="320">
+    xmlns:data="using:MengWeather.Model">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ResourceDictionary.xaml"/>
+                <ResourceDictionary Source="ResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -22,106 +20,114 @@
             <Pivot.Items>
                 <PivotItem>
                     <PivotItem.Header>
-                        <TextBlock Foreground="Gray" Text="常规" Style="{StaticResource TextStyle2}"/>
+                        <TextBlock Foreground="Gray" Text="常规" Style="{StaticResource TextStyle2}" />
                     </PivotItem.Header>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 48 0 0">
                             <TextBlock Text="磁贴显示城市："
                                    Style="{StaticResource TextStyle3}"
-                                   Margin="0 4 0 0"/>
+                                   Margin="0 4 0 0" />
                             <ComboBox Name="comboBox"
                                   Width="140"
                                   ItemsSource="{x:Bind AddedCity}"
                                   SelectionChanged="comboBox_SelectionChanged">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="data:CityInfo">
-                                        <TextBlock  Foreground="Black" Style="{StaticResource TextStyle3}" Text="{x:Bind City}"/>
+                                        <TextBlock  Foreground="Black" Style="{StaticResource TextStyle3}" Text="{x:Bind City}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                         </StackPanel>
-                        <TextBlock Name="tileCityTextBlock" FontSize="12" Style="{StaticResource TextStyle3}" Margin="24 8 0 0"/>
+                        <TextBlock Name="tileCityTextBlock" FontSize="12" Style="{StaticResource TextStyle3}" Margin="24 8 0 0" />
                     </StackPanel>
                 </PivotItem>
                 <PivotItem>
                     <PivotItem.Header>
-                        <TextBlock Foreground="Gray" Text="关于" Style="{StaticResource TextStyle2}"/>
+                        <TextBlock Foreground="Gray" Text="关于" Style="{StaticResource TextStyle2}" />
                     </PivotItem.Header>
-                    <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <StackPanel >
-                            <StackPanel Orientation="Horizontal" Margin="-36">
-                                <Image Source="Assets/Logo.png" Height="160" Width="160" HorizontalAlignment="Left" />
-                                <StackPanel VerticalAlignment="Center" Margin="0 24 0 0">
-                                    <TextBlock  Style="{StaticResource TextStyle3}">萌天气</TextBlock>
-                                    <TextBlock Style="{StaticResource TextStyle3}">版本 2.0.0.0</TextBlock>
-                                    <TextBlock Style="{StaticResource TextStyle3}">@张森辉</TextBlock>
+                    <ScrollViewer VerticalScrollMode="Auto"
+                                  HorizontalScrollMode="Auto"
+                                  VerticalScrollBarVisibility="Hidden"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <Grid Background="{ThemeResource SystemControlDisabledAccentBrush}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="-36">
+                                    <Image Source="Assets/Logo.png" Height="160" Width="160" HorizontalAlignment="Left" />
+                                    <StackPanel VerticalAlignment="Center" Margin="0 24 0 0">
+                                        <TextBlock  Style="{StaticResource TextStyle3}">萌天气</TextBlock>
+                                        <TextBlock Style="{StaticResource TextStyle3}">版本 2.0.1.0</TextBlock>
+                                        <TextBlock Style="{StaticResource TextStyle3}">@张森辉</TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource TextStyle3}" Margin="0 12 0 0">反馈&amp;联系作者</TextBlock>
+                                    <TextBlock Style="{StaticResource TextStyle3}">kindroach@hotmail.com</TextBlock>
+                                    <TextBlock Style="{StaticResource TextStyle3}" Margin="0 12 0 0">本程序开源，仅供学习与交流</TextBlock>
+                                    <TextBlock Style="{StaticResource TextStyle3}" >不用于任何商业用途</TextBlock>
+                                    <TextBlock Style="{StaticResource TextStyle3}" >如果侵犯您的合法权益</TextBlock>
+                                    <TextBlock Style="{StaticResource TextStyle3}" >请及时联系本人以第一时间删除</TextBlock>
+                                    <HyperlinkButton Content="访问GitHub" NavigateUri="https://github.com/KindRoach/MengWeather" Foreground="White" />
+                                    <TextBlock Style="{StaticResource TextStyle3}" Margin="0 12 0 0">更新日志</TextBlock>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel>
-                                <TextBlock Style="{StaticResource TextStyle3}" Margin="0 12 0 0">反馈&amp;联系作者</TextBlock>
-                                <TextBlock Style="{StaticResource TextStyle3}">kindroach@hotmail.com</TextBlock>
-                                <TextBlock Style="{StaticResource TextStyle3}" Margin="0 12 0 0">本程序开源，仅供学习与交流</TextBlock>
-                                <TextBlock Style="{StaticResource TextStyle3}" >不用于任何商业用途</TextBlock>
-                                <TextBlock Style="{StaticResource TextStyle3}" >如果侵犯您的合法权益</TextBlock>
-                                <TextBlock Style="{StaticResource TextStyle3}" >请及时联系本人以第一时间删除</TextBlock>
-                                <HyperlinkButton Content="访问GitHub" NavigateUri="https://github.com/KindRoach/MengWeather" Foreground="White" />
-                                <TextBlock Style="{StaticResource TextStyle3}" Margin="0 12 0 0">更新日志</TextBlock>
-                            </StackPanel>
-                        </StackPanel>
-                        <ScrollViewer Height="Auto" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                             <TextBlock Name="updateText"
-                                       Style="{StaticResource TextStyle3}"
-                                       TextWrapping="WrapWholeWords"/>
-                        </ScrollViewer>
-                    </Grid>
+                                   Grid.Row="1"
+                                   Style="{StaticResource TextStyle3}"
+                                   TextWrapping="WrapWholeWords" />
+                        </Grid>
+                    </ScrollViewer>
                 </PivotItem>
                 <PivotItem>
                     <PivotItem.Header>
-                        <TextBlock Foreground="Gray" Text="数据来源" Style="{StaticResource TextStyle2}"/>
+                        <TextBlock Foreground="Gray" Text="数据来源" Style="{StaticResource TextStyle2}" />
                     </PivotItem.Header>
-                    <StackPanel>
-                        <StackPanel Margin="12">
-                            <Image HorizontalAlignment="Center"
+                    <ScrollViewer VerticalScrollMode="Auto"
+                                  HorizontalScrollMode="Auto"
+                                  VerticalScrollBarVisibility="Hidden"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <StackPanel Margin="12">
+                                <Image HorizontalAlignment="Center"
                                    Source="Assets/Logo/CaiYunLogo.png"
                                    Height="120" Width="120" />
-                            <HyperlinkButton HorizontalAlignment="Center"
+                                <HyperlinkButton HorizontalAlignment="Center"
                                              Content="彩云天气"
                                              FontSize="18" NavigateUri="https://www.caiyunapp.com/"
                                              Foreground="White" />
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Margin="12">
-                            <Image HorizontalAlignment="Center"
+                            <StackPanel Margin="12">
+                                <Image HorizontalAlignment="Center"
                                    Source="Assets/Logo/CMALogo.png"
                                    Height="120" Width="120" />
-                            <HyperlinkButton HorizontalAlignment="Center"
+                                <HyperlinkButton HorizontalAlignment="Center"
                                              Content="中国气象局"
                                              FontSize="18" NavigateUri="http://www.cma.gov.cn/"
                                              Foreground="White" />
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Margin="12">
-                            <Image HorizontalAlignment="Center"
+                            <StackPanel Margin="12">
+                                <Image HorizontalAlignment="Center"
                                    Source="Assets/Logo/HeWeatherLogo.png"
                                    Height="60" Width="120" />
-                            <HyperlinkButton HorizontalAlignment="Center"
+                                <HyperlinkButton HorizontalAlignment="Center"
                                              Content="和风天气"
                                              FontSize="18" NavigateUri="http://www.heweather.com/"
                                              Foreground="White" />
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-
+                    </ScrollViewer>
                 </PivotItem>
                 <PivotItem>
                     <PivotItem.Header>
-                        <TextBlock Foreground="Gray" Text="参考" Style="{StaticResource TextStyle2}"/>
+                        <TextBlock Foreground="Gray" Text="参考" Style="{StaticResource TextStyle2}" />
                     </PivotItem.Header>
                     <StackPanel Margin="12">
-                        <HyperlinkButton Content="UWP的一种下拉刷新实现" FontSize="18" 
+                        <HyperlinkButton Content="UWP的一种下拉刷新实现" FontSize="18"
                                      NavigateUri="http://www.cnblogs.com/ms-uap/p/4814507.html"
                                      Foreground="White" />
                     </StackPanel>

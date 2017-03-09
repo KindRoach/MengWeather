@@ -75,8 +75,6 @@ namespace MengWeather
             splitView.IsPaneOpen = !splitView.IsPaneOpen;
         }
 
-
-
         public async Task ChangeCity(CityInfo newCity)
         {
             TileManager.UpdateTile();
@@ -171,7 +169,6 @@ namespace MengWeather
                 await ChangeCity(Model.SelectedCity);
             }
         }
-
 
         private void goBackButton_Click(object sender, RoutedEventArgs e)
         {
