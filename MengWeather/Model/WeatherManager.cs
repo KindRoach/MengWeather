@@ -1,13 +1,14 @@
-﻿using MengWeather.Model.Weather.Displayed;
-using MengWeather.Model.Weather.Forecast;
-using MengWeather.Model.Weather.Realtime;
-using MengWeather.Model.Weather.Suggestion;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using MengWeather.Model.Weather.Displayed;
+using MengWeather.Model.Weather.Forecast;
+using MengWeather.Model.Weather.Realtime;
+using MengWeather.Model.Weather.Suggestion;
+using Newtonsoft.Json;
+using Suggestion = MengWeather.Model.Weather.Displayed.Suggestion;
 
 namespace MengWeather.Model
 {
@@ -17,13 +18,17 @@ namespace MengWeather.Model
         {
             try
             {
-                string caiYunToken = "XDyzLicS4CorboFz";
-                string heWeatherKey = "6a07fac7b4be47028e83de229bbf4731";
-                string location = city.Lon.ToString() + "," + city.Lat;
+                var caiYunToken = "XDyzLicS4CorboFz";
+                var heWeatherKey = "6a07fac7b4be47028e83de229bbf4731";
+                var location = city.Lon + "," + city.Lat;
                 var httpClient = new HttpClient();
-                var realtimeJson = await httpClient.GetStringAsync($"https://api.caiyunapp.com/v2/{caiYunToken}/{location}/realtime");
-                var forecastJson = await httpClient.GetStringAsync($"https://api.caiyunapp.com/v2/{caiYunToken}/{location}/forecast");
-                var suggestionJson = await httpClient.GetStringAsync($"https://free-api.heweather.com/v5/suggestion/?city={city.ID}&key={heWeatherKey}");
+                var realtimeJson =
+                    await httpClient.GetStringAsync($"https://api.caiyunapp.com/v2/{caiYunToken}/{location}/realtime");
+                var forecastJson =
+                    await httpClient.GetStringAsync($"https://api.caiyunapp.com/v2/{caiYunToken}/{location}/forecast");
+                var suggestionJson =
+                    await httpClient.GetStringAsync(
+                        $"https://free-api.heweather.com/v5/suggestion/?city={city.ID}&key={heWeatherKey}");
                 var realtime = JsonConvert.DeserializeObject<CaiYunWeather_Realtime>(realtimeJson);
                 var forecast = JsonConvert.DeserializeObject<CaiYunWeather_Forecast>(forecastJson);
                 var heWeather = JsonConvert.DeserializeObject<HeWeather_Suggestion>(suggestionJson);
@@ -47,9 +52,9 @@ namespace MengWeather.Model
         public static async void ShowConnectFailDialog(Exception ex)
         {
             var dialog = new ContentDialog();
-            dialog.Title = "数据错误，请稍后刷新重试" + Environment.NewLine + ex.ToString();
+            dialog.Title = "数据错误，请稍后刷新重试" + Environment.NewLine + ex;
             dialog.PrimaryButtonText = "确认";
-            ContentDialogResult result = await dialog.ShowAsync();
+            var result = await dialog.ShowAsync();
         }
 
         private static void SetRealTime(Weather_Displayed displayed, CaiYunWeather_Realtime realtime)
@@ -72,7 +77,7 @@ namespace MengWeather.Model
         {
             displayed.HourlyForecates_48 = new List<WeatherUnit>();
             var hourly = forecast.Result.Hourly;
-            for (int i = 0; i < hourly.Aqi.Count; i++)
+            for (var i = 0; i < hourly.Aqi.Count; i++)
             {
                 displayed.HourlyForecates_48.Add(new WeatherUnit());
                 var weatherUnit = displayed.HourlyForecates_48[i];
@@ -88,7 +93,7 @@ namespace MengWeather.Model
             }
 
             displayed.HourlyForecates_8 = new List<WeatherUnit>();
-            for (int i = 0; i < 8; i++)
+            for (var i = 0; i < 8; i++)
             {
                 displayed.HourlyForecates_8.Add(new WeatherUnit());
                 var weatherUnit = displayed.HourlyForecates_8[i];
@@ -106,7 +111,7 @@ namespace MengWeather.Model
 
             displayed.DailyForecates = new List<WeatherUnit>();
             var daily = forecast.Result.Daily;
-            for (int i = 0; i < daily.Aqi.Count; i++)
+            for (var i = 0; i < daily.Aqi.Count; i++)
             {
                 displayed.DailyForecates.Add(new WeatherUnit());
                 var weatherUnit = displayed.DailyForecates[i];
@@ -115,7 +120,8 @@ namespace MengWeather.Model
                 weatherUnit.Pm25 = GetPM25(daily.Pm25[i].Avg);
                 weatherUnit.Precipitation = GetPrecipitation_Daily(hourly.Precipitation[i].Value);
                 SetSkycon(weatherUnit, daily.Skycon[i].Value);
-                weatherUnit.Temperature = $"{Math.Round(daily.Temperature[i].Min, 0)} ~ { GetTemperature(daily.Temperature[i].Max)}";
+                weatherUnit.Temperature =
+                    $"{Math.Round(daily.Temperature[i].Min, 0)} ~ {GetTemperature(daily.Temperature[i].Max)}";
                 weatherUnit.FullDateTime = DateTime.Parse(daily.Aqi[i].Date);
                 weatherUnit.Time = $"{weatherUnit.FullDateTime.Month}月{weatherUnit.FullDateTime.Day}日";
                 weatherUnit.Wind = GetWind(daily.Wind[i].Avg.Direction, daily.Wind[i].Avg.Speed);
@@ -127,58 +133,58 @@ namespace MengWeather.Model
 
         private static void SetSuggestion(Weather_Displayed displayed, HeWeather_Suggestion heWeather)
         {
-            displayed.Suggestions = new List<Weather.Displayed.Suggestion>();
+            displayed.Suggestions = new List<Suggestion>();
             var suggestion = heWeather.HeWeather5[0].Suggestion;
-            displayed.Suggestions.Add(new Weather.Displayed.Suggestion()
+            displayed.Suggestions.Add(new Suggestion
             {
                 Name = "空气质量",
                 Icon = "Assets/SuggestionIcon/Air.png",
                 Brf = suggestion.Air.Brf,
                 Txt = suggestion.Air.Txt
             });
-            displayed.Suggestions.Add(new Weather.Displayed.Suggestion()
+            displayed.Suggestions.Add(new Suggestion
             {
                 Name = "舒适指数",
                 Icon = "Assets/SuggestionIcon/Comf.png",
                 Brf = suggestion.Comf.Brf,
                 Txt = suggestion.Comf.Txt
             });
-            displayed.Suggestions.Add(new Weather.Displayed.Suggestion()
+            displayed.Suggestions.Add(new Suggestion
             {
                 Name = "洗车指数",
                 Icon = "Assets/SuggestionIcon/Cw.png",
                 Brf = suggestion.Cw.Brf,
                 Txt = suggestion.Cw.Txt
             });
-            displayed.Suggestions.Add(new Weather.Displayed.Suggestion()
+            displayed.Suggestions.Add(new Suggestion
             {
                 Name = "穿衣指数",
                 Icon = "Assets/SuggestionIcon/Drsg.png",
                 Brf = suggestion.Drsg.Brf,
                 Txt = suggestion.Drsg.Txt
             });
-            displayed.Suggestions.Add(new Weather.Displayed.Suggestion()
+            displayed.Suggestions.Add(new Suggestion
             {
                 Name = "感冒指数",
                 Icon = "Assets/SuggestionIcon/Flu.png",
                 Brf = suggestion.Flu.Brf,
                 Txt = suggestion.Flu.Txt
             });
-            displayed.Suggestions.Add(new Weather.Displayed.Suggestion()
+            displayed.Suggestions.Add(new Suggestion
             {
                 Name = "运动指数",
                 Icon = "Assets/SuggestionIcon/Sport.png",
                 Brf = suggestion.Sport.Brf,
                 Txt = suggestion.Sport.Txt
             });
-            displayed.Suggestions.Add(new Weather.Displayed.Suggestion()
+            displayed.Suggestions.Add(new Suggestion
             {
                 Name = "旅游指数",
                 Icon = "Assets/SuggestionIcon/Trav.png",
                 Brf = suggestion.Trav.Brf,
                 Txt = suggestion.Trav.Txt
             });
-            displayed.Suggestions.Add(new Weather.Displayed.Suggestion()
+            displayed.Suggestions.Add(new Suggestion
             {
                 Name = "防晒指数",
                 Icon = "Assets/SuggestionIcon/Uv.png",
@@ -229,12 +235,12 @@ namespace MengWeather.Model
             else if (mm > 25) precipitation = "大";
             else if (mm > 10) precipitation = "中";
             else if (mm > 0.24) precipitation = "小";
-            else return ("无降水：无");
+            else return "无降水：无";
             return $"{precipitation}降水：{Math.Round(rain, 1)}mm/h";
         }
 
         /// <summary>
-        /// 用于计算以天为单位的预报，降雨量*24小时
+        ///     用于计算以天为单位的预报，降雨量*24小时
         /// </summary>
         /// <param name="rain"></param>
         /// <returns></returns>
@@ -247,12 +253,12 @@ namespace MengWeather.Model
             else if (mm > 25) precipitation = "大";
             else if (mm > 10) precipitation = "中";
             else if (mm >= 0.05) precipitation = "小";
-            else return ("无降水：无");
+            else return "无降水：无";
             return $"{precipitation}降水：{Math.Round(mm, 1)}mm";
         }
 
         /// <summary>
-        /// 为了给雨雪加上强度描述，请务必在GetPrecipitation()方法后调用
+        ///     为了给雨雪加上强度描述，请务必在GetPrecipitation()方法后调用
         /// </summary>
         /// <param name="unit"></param>
         /// <param name="weather"></param>
@@ -338,24 +344,78 @@ namespace MengWeather.Model
             else windDir = "西北风";
 
             var spe = speed;
-            if (spe >= 221) windSpe = "18级";
-            else if (spe >= 202) windSpe = "17级";
-            else if (spe >= 184) windSpe = "16级";
-            else if (spe >= 167) windSpe = "15级";
-            else if (spe >= 150) windSpe = "14级";
-            else if (spe >= 133) windSpe = "13级";
-            else if (spe >= 118) windSpe = "12级";
-            else if (spe >= 104) windSpe = "11级";
-            else if (spe >= 88) windSpe = "10级";
-            else if (spe >= 76) windSpe = "9级";
-            else if (spe >= 63) windSpe = "8级";
-            else if (spe >= 52) windSpe = "7级";
-            else if (spe >= 41) windSpe = "6级";
-            else if (spe >= 31) windSpe = "5级";
-            else if (spe >= 20) windSpe = "4级";
-            else if (spe >= 13) windSpe = "3级";
-            else if (spe >= 7) windSpe = "2级";
-            else if (spe >= 2) windSpe = "1级";
+            if (spe >= 221)
+            {
+                windSpe = "18级";
+            }
+            else if (spe >= 202)
+            {
+                windSpe = "17级";
+            }
+            else if (spe >= 184)
+            {
+                windSpe = "16级";
+            }
+            else if (spe >= 167)
+            {
+                windSpe = "15级";
+            }
+            else if (spe >= 150)
+            {
+                windSpe = "14级";
+            }
+            else if (spe >= 133)
+            {
+                windSpe = "13级";
+            }
+            else if (spe >= 118)
+            {
+                windSpe = "12级";
+            }
+            else if (spe >= 104)
+            {
+                windSpe = "11级";
+            }
+            else if (spe >= 88)
+            {
+                windSpe = "10级";
+            }
+            else if (spe >= 76)
+            {
+                windSpe = "9级";
+            }
+            else if (spe >= 63)
+            {
+                windSpe = "8级";
+            }
+            else if (spe >= 52)
+            {
+                windSpe = "7级";
+            }
+            else if (spe >= 41)
+            {
+                windSpe = "6级";
+            }
+            else if (spe >= 31)
+            {
+                windSpe = "5级";
+            }
+            else if (spe >= 20)
+            {
+                windSpe = "4级";
+            }
+            else if (spe >= 13)
+            {
+                windSpe = "3级";
+            }
+            else if (spe >= 7)
+            {
+                windSpe = "2级";
+            }
+            else if (spe >= 2)
+            {
+                windSpe = "1级";
+            }
             else
             {
                 windDir = "无风";

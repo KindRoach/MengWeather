@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Newtonsoft.Json;
 
 namespace MengWeather.Model
 {
@@ -15,6 +15,11 @@ namespace MengWeather.Model
         public string ID { get; set; }
         public string Cnty { get; set; }
 
+        public bool Equals(CityInfo other)
+        {
+            return City == other.City;
+        }
+
         public CityInfo GetCopy()
         {
             var other = new CityInfo();
@@ -25,11 +30,6 @@ namespace MengWeather.Model
             other.ID = ID;
             other.Cnty = Cnty;
             return other;
-        }
-
-        public bool Equals(CityInfo other)
-        {
-            return City == other.City;
         }
 
         public override int GetHashCode()
@@ -44,9 +44,9 @@ namespace MengWeather.Model
 
         public static async Task ReadData()
         {
-            StorageFile cityData = await StorageFile.GetFileFromApplicationUriAsync(
+            var cityData = await StorageFile.GetFileFromApplicationUriAsync(
                 new Uri(@"ms-appx:///Assets/CityLocationData/CitiesLocation.txt"));
-            string json = await FileIO.ReadTextAsync(cityData);
+            var json = await FileIO.ReadTextAsync(cityData);
             Cities = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<List<CityInfo>>(json));
         }
 

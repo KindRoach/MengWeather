@@ -1,9 +1,9 @@
-﻿using MengWeather.Model.Weather.Displayed;
-using System;
+﻿using System;
 using Windows.Data.Xml.Dom;
 using Windows.Devices.Geolocation;
 using Windows.Storage;
 using Windows.UI.Notifications;
+using MengWeather.Model.Weather.Displayed;
 
 namespace MengWeather.Model
 {
@@ -42,25 +42,19 @@ namespace MengWeather.Model
             var uri = new Uri("ms-appx:///Assets/TilesTemplate.xml");
             var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
             var tileXml = await XmlDocument.LoadFromFileAsync(file);
-            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
-            int i = 0;
-            foreach (IXmlNode item in tileTextAttributes)
+            var tileTextAttributes = tileXml.GetElementsByTagName("text");
+            var i = 0;
+            foreach (var item in tileTextAttributes)
             {
                 if (i % 2 == 0)
-                {
                     item.InnerText = tileCity.City;
-                }
                 else
-                {
                     item.InnerText = weather.Now.Temperature;
-                }
                 i++;
             }
-            XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
-            foreach (IXmlNode item in tileImageAttributes)
-            {
+            var tileImageAttributes = tileXml.GetElementsByTagName("image");
+            foreach (var item in tileImageAttributes)
                 (item as XmlElement).SetAttribute("src", weather.Now.Icon);
-            }
             var tileNotification = new TileNotification(tileXml);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
         }

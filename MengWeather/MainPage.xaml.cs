@@ -1,36 +1,50 @@
-﻿using MengWeather.Model;
-using MengWeather.Model.ViewModel;
-using MengWeather.Model.Weather.Displayed;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Foundation.Metadata;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using MengWeather.Model;
+using MengWeather.Model.ViewModel;
+using MengWeather.Model.Weather.Displayed;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace MengWeather
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public MainPageViewModel Model { get; set; }
-        public HashSet<CityInfo> AddedCity { get; set; }
-
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Model = new MainPageViewModel();
             Model.CityList = new ObservableCollection<CityInfo>();
             AddedCity = new HashSet<CityInfo>();
+            SystemNavigationManager.GetForCurrentView().BackRequested +=
+                App_BackRequested;
+        }
+
+        public MainPageViewModel Model { get; set; }
+        public HashSet<CityInfo> AddedCity { get; set; }
+
+        private void App_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (goBackButton.Visibility == Visibility.Visible && e.Handled == false)
+            {
+                // 务必加上次行，不然系统会认为后退请求没有被处理，会返回开始屏幕
+                e.Handled = true;
+                goBackButton_Click(sender, new RoutedEventArgs());
+            }
         }
 
         private async void _rootPage_Loaded(object sender, RoutedEventArgs e)
@@ -65,9 +79,7 @@ namespace MengWeather
                 return;
             }
             foreach (var item in settingList)
-            {
                 AddCity(item);
-            }
         }
 
         private void splitViewButton_Click(object sender, RoutedEventArgs e)
@@ -77,6 +89,7 @@ namespace MengWeather
 
         public async Task ChangeCity(CityInfo newCity)
         {
+            mainPageFrame.Visibility = Visibility.Collapsed;
             TileManager.UpdateTile();
             progressRing.IsActive = true;
             Model.SelectedCity = newCity;
@@ -93,6 +106,7 @@ namespace MengWeather
             finally
             {
                 progressRing.IsActive = false;
+                mainPageFrame.Visibility = Visibility.Visible;
             }
             var tuple = new Tuple<Weather_Displayed, MainPage>(weather, this);
             mainPageFrame.Navigate(typeof(WeatherPage), tuple);
@@ -113,9 +127,7 @@ namespace MengWeather
             splitView.IsPaneOpen = false;
             var clickedCity = e.ClickedItem as CityInfo;
             if (clickedCity == null)
-            {
                 throw new Exception("Clicked item is not CityInfo");
-            }
             if (clickedCity.Equals(Model.SelectedCity)) return;
             await ChangeCity(clickedCity);
         }
@@ -125,13 +137,13 @@ namespace MengWeather
             splitView.IsPaneOpen = false;
             var clickedItem = e.ClickedItem as StackPanel;
             if (clickedItem == null)
-            {
                 throw new Exception("Clicked item is not CityInfo");
-            }
             if (clickedItem.Name == "AddItem")
             {
                 mainPageFrame.Navigate(typeof(AddCityPage), this);
-                cityNameTextBlock.Text = "";
+                cityNameTextBlock.Text = "添加";
+                goBackButton.Visibility = Visibility.Visible;
+                splitViewButton.Visibility = Visibility.Collapsed;
             }
             else if (clickedItem.Name == "SettingItem")
             {
@@ -148,7 +160,7 @@ namespace MengWeather
                 if (Model.CityList.Count == 0) dialog.Title = "关注列表已为空";
                 dialog.PrimaryButtonText = "确认";
                 dialog.SecondaryButtonText = "取消";
-                ContentDialogResult result = await dialog.ShowAsync();
+                var result = await dialog.ShowAsync();
                 if (result == ContentDialogResult.Primary)
                 {
                     Model.CityList.Remove(Model.SelectedCity);
@@ -157,10 +169,12 @@ namespace MengWeather
                     if (Model.CityList.Count == 0)
                     {
                         mainPageFrame.Navigate(typeof(AddCityPage), this);
-                        Model.SelectedCity = new CityInfo() { City = "" };
+                        Model.SelectedCity = new CityInfo {City = ""};
                     }
                     else
+                    {
                         await ChangeCity(Model.CityList[0]);
+                    }
                 }
             }
             else // Refresh
@@ -188,18 +202,18 @@ namespace MengWeather
         }
 
         /// <summary>
-        /// 设置状态栏颜色
+        ///     设置状态栏颜色
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void backgroundGrid_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
             {
-                StatusBar statusBar = StatusBar.GetForCurrentView();
+                var statusBar = StatusBar.GetForCurrentView();
                 statusBar.ForegroundColor = Colors.White;
                 var gridBackground = (sender as Grid).Background;
-                statusBar.BackgroundColor = ((SolidColorBrush)gridBackground).Color;
+                statusBar.BackgroundColor = ((SolidColorBrush) gridBackground).Color;
                 statusBar.BackgroundOpacity = 1;
             }
         }

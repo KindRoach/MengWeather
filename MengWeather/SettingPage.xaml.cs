@@ -1,30 +1,30 @@
-﻿using MengWeather.Model;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using MengWeather.Model;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace MengWeather
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class SettingPage : Page
     {
-        public int LastPviotSelectedIndex { get; set; } = 0;
-        public ObservableCollection<CityInfo> AddedCity { get; set; }
-        public CityInfo TileCity { get; set; }
-
         public SettingPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             pivot.SelectedIndex = 0;
             ReadSetting();
             WriteUpdateLog();
         }
+
+        public int LastPviotSelectedIndex { get; set; }
+        public ObservableCollection<CityInfo> AddedCity { get; set; }
+        public CityInfo TileCity { get; set; }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -45,6 +45,10 @@ namespace MengWeather
 
         private void WriteUpdateLog()
         {
+            updateText.Text = updateText.Text + "2017/4/21" + Environment.NewLine;
+            updateText.Text = updateText.Text + "1.添加了对WinPhone后退键的支持" + Environment.NewLine;
+            updateText.Text = updateText.Text + "2.优化了页面导航逻辑" + Environment.NewLine;
+            updateText.Text = updateText.Text + Environment.NewLine;
             updateText.Text = updateText.Text + "2017/3/9" + Environment.NewLine;
             updateText.Text = updateText.Text + "1.UI布局调整，修复了部分页面显示不全、内容重叠的bug" + Environment.NewLine;
             updateText.Text = updateText.Text + Environment.NewLine;
@@ -90,7 +94,7 @@ namespace MengWeather
             }
             finally
             {
-                AddedCity.Add(new CityInfo() { City = "自动定位" });
+                AddedCity.Add(new CityInfo {City = "自动定位"});
             }
         }
 
@@ -98,15 +102,11 @@ namespace MengWeather
         {
             var selectCity = comboBox.SelectedItem as CityInfo;
             if (selectCity == null)
-            {
                 throw new Exception("Clicked item is not CityInfo");
-            }
             SettingManager.SetTileCity(selectCity);
             tileCityTextBlock.Text = "设置已保存";
             if (selectCity.City == "自动定位")
-            {
                 tileCityTextBlock.Text += Environment.NewLine + "请确保打开定位功能";
-            }
         }
     }
 }

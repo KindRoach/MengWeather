@@ -1,39 +1,37 @@
-﻿using MengWeather.Model.ViewModel;
-using MengWeather.Model.Weather.Displayed;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using MengWeather.Model.ViewModel;
+using MengWeather.Model.Weather.Displayed;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace MengWeather
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class WeatherPage : Page
     {
-        public WeatherViewModel Model { get; set; }
-        public MainPage ParentPage { get; set; }
-
         public WeatherPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Model = new WeatherViewModel();
         }
+
+        public WeatherViewModel Model { get; set; }
+        public MainPage ParentPage { get; set; }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var tuple = e.Parameter as Tuple<Weather_Displayed, MainPage>;
             if (tuple == null)
-            {
                 throw new Exception("Navigation Parameter is unavailable");
-            }
             Model.Weather = tuple.Item1;
             ParentPage = tuple.Item2;
-            this.Bindings.Update();
+            Bindings.Update();
             base.OnNavigatedTo(e);
         }
 

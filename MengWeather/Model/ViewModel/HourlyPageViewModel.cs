@@ -1,18 +1,18 @@
-﻿using MengWeather.Model.Weather.Displayed;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using MengWeather.Model.Weather.Displayed;
 
 namespace MengWeather.Model.ViewModel
 {
     public class HourlyPageViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private ObservableCollection<WeatherUnit> hours;
+
+        private WeatherUnit selectedHour;
 
         public ObservableCollection<WeatherUnit> Hours
         {
-            get { return hours; }
+            get => hours;
             set
             {
                 hours = value;
@@ -21,11 +21,9 @@ namespace MengWeather.Model.ViewModel
             }
         }
 
-        private WeatherUnit selectedHour;
-
         public WeatherUnit SelectedHour
         {
-            get { return selectedHour; }
+            get => selectedHour;
             set
             {
                 selectedHour = value;
@@ -33,5 +31,7 @@ namespace MengWeather.Model.ViewModel
                     PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedHour)));
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

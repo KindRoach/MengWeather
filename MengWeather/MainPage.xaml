@@ -29,18 +29,18 @@
                     Name="splitViewButton"
                     Click="splitViewButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets"
-                      Glyph="&#xE1C4;"
+                          Glyph="&#xE1C4;"
                           Margin="2 0 0 0"
-                      Style="{StaticResource FontIconStyle}" />
+                          Style="{StaticResource FontIconStyle}" />
             </Button>
             <Button Style="{StaticResource ButtonStyle}"
                     Name="goBackButton"
                     Click="goBackButton_Click"
                     Visibility="Collapsed">
                 <FontIcon FontFamily="Segoe MDL2 Assets"
-                      Glyph="&#xE96F;"
+                          Glyph="&#xE96F;"
                           Margin="2 0 0 0"
-                      Style="{StaticResource FontIconStyle}" />
+                          Style="{StaticResource FontIconStyle}" />
             </Button>
             <TextBlock Name="cityNameTextBlock"
                        Margin="12 0 0 0"
@@ -79,31 +79,39 @@
                         <ListView.Items>
                             <StackPanel Orientation="Horizontal" Name="AddItem">
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE109;"
-                                              Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0" />
+                                          Style="{StaticResource FontIconStyle}"
+                                          Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
-                                               Margin="0 -2 0 0" >添加</TextBlock>
+                                           Margin="0 -2 0 0">
+                                    添加
+                                </TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Name="DeleteItem">
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;"
-                                              Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0" />
+                                          Style="{StaticResource FontIconStyle}"
+                                          Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
-                                               Margin="0 -2 0 0" >删除</TextBlock>
+                                           Margin="0 -2 0 0">
+                                    删除
+                                </TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Name="RefreshItem">
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE117;"
-                                              Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0" />
+                                          Style="{StaticResource FontIconStyle}"
+                                          Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
-                                               Margin="0 -2 0 0" >刷新</TextBlock>
+                                           Margin="0 -2 0 0">
+                                    刷新
+                                </TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Name="SettingItem">
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE115;"
-                                              Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0" />
+                                          Style="{StaticResource FontIconStyle}"
+                                          Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
-                                               Margin="0 -2 0 0" >设置</TextBlock>
+                                           Margin="0 -2 0 0">
+                                    设置
+                                </TextBlock>
                             </StackPanel>
                         </ListView.Items>
                     </ListView>
@@ -111,7 +119,7 @@
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid>
-                    <Frame Name="mainPageFrame" Margin="12" MaxWidth="600" MinWidth="240" />
+                    <Frame Name="mainPageFrame" Margin="12" MaxWidth="600" MinWidth="320" />
                     <ProgressRing Name="progressRing" Style="{StaticResource ProgressRingStyle}" />
                 </Grid>
             </SplitView.Content>

@@ -1,60 +1,60 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace MengWeather.Model.Weather.Forecast
 {
     public class CaiYunWeather_Forecast
     {
         /// <summary>
-        /// 请求状态
+        ///     请求状态
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
 
         /// <summary>
-        /// 语言
+        ///     语言
         /// </summary>
         [JsonProperty("lang")]
         public string Lang { get; set; }
 
         /// <summary>
-        /// 请求结果，包括小时级，分钟级，天级预报
+        ///     请求结果，包括小时级，分钟级，天级预报
         /// </summary>
         [JsonProperty("result")]
         public Result Result { get; set; }
 
         /// <summary>
-        /// Unix时间戳
+        ///     Unix时间戳
         /// </summary>
         [JsonProperty("server_time")]
         public int ServerTime { get; set; }
 
         /// <summary>
-        /// 空气质量
+        ///     空气质量
         /// </summary>
         [JsonProperty("api_status")]
         public string ApiStatus { get; set; }
 
         /// <summary>
-        /// 时区偏移秒数，东八区为28800秒，即8小时
+        ///     时区偏移秒数，东八区为28800秒，即8小时
         /// </summary>
         [JsonProperty("tzshift")]
         public int Tzshift { get; set; }
 
         /// <summary>
-        /// api版本号
+        ///     api版本号
         /// </summary>
         [JsonProperty("api_version")]
         public string ApiVersion { get; set; }
 
         /// <summary>
-        /// 单位，metric表示米制
+        ///     单位，metric表示米制
         /// </summary>
         [JsonProperty("unit")]
         public string Unit { get; set; }
 
         /// <summary>
-        /// 经纬度坐标
+        ///     经纬度坐标
         /// </summary>
         [JsonProperty("location")]
         public List<double> Location { get; set; }
@@ -63,25 +63,25 @@ namespace MengWeather.Model.Weather.Forecast
     public class Result
     {
         /// <summary>
-        /// 小时预报
+        ///     小时预报
         /// </summary>
         [JsonProperty("hourly")]
         public Hourly Hourly { get; set; }
 
         /// <summary>
-        /// 分钟预报
+        ///     分钟预报
         /// </summary>
         [JsonProperty("minutely")]
         public Minutely Minutely { get; set; }
 
         /// <summary>
-        /// 天预报
+        ///     天预报
         /// </summary>
         [JsonProperty("daily")]
         public Daily Daily { get; set; }
 
         /// <summary>
-        /// 未知项
+        ///     未知项
         /// </summary>
         [JsonProperty("primary")]
         public int Primary { get; set; }
@@ -90,61 +90,61 @@ namespace MengWeather.Model.Weather.Forecast
     public class Hourly
     {
         /// <summary>
-        /// 请求状态
+        ///     请求状态
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
 
         /// <summary>
-        /// 文字描述
+        ///     文字描述
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// 天气概况
+        ///     天气概况
         /// </summary>
         [JsonProperty("skycon")]
         public List<Skycon> Skycon { get; set; }
 
         /// <summary>
-        /// 云量
+        ///     云量
         /// </summary>
         [JsonProperty("cloudrate")]
         public List<Cloudrate> Cloudrate { get; set; }
 
         /// <summary>
-        /// 空气质量
+        ///     空气质量
         /// </summary>
         [JsonProperty("aqi")]
         public List<Aqi> Aqi { get; set; }
 
         /// <summary>
-        /// 相对湿度
+        ///     相对湿度
         /// </summary>
         [JsonProperty("humidity")]
         public List<Humidity> Humidity { get; set; }
 
         /// <summary>
-        /// PM2.5
+        ///     PM2.5
         /// </summary>
         [JsonProperty("pm25")]
         public List<Pm25> Pm25 { get; set; }
 
         /// <summary>
-        /// 降雨强度
+        ///     降雨强度
         /// </summary>
         [JsonProperty("precipitation")]
         public List<Precipitation> Precipitation { get; set; }
 
         /// <summary>
-        /// 风
+        ///     风
         /// </summary>
         [JsonProperty("wind")]
         public List<Wind> Wind { get; set; }
 
         /// <summary>
-        /// 温度
+        ///     温度
         /// </summary>
         [JsonProperty("temperature")]
         public List<Temperature> Temperature { get; set; }
@@ -153,7 +153,7 @@ namespace MengWeather.Model.Weather.Forecast
     public class Skycon
     {
         /// <summary>
-        /// CLEAR_DAY：晴天，CLEAR_NIGHT：晴夜，PARTLY_CLOUDY_DAY：多云，PARTLY_CLOUDY_NIGHT：多云，CLOUDY：阴，RAIN：雨，SNOW：雪，WIND：风，FOG：雾
+        ///     CLEAR_DAY：晴天，CLEAR_NIGHT：晴夜，PARTLY_CLOUDY_DAY：多云，PARTLY_CLOUDY_NIGHT：多云，CLOUDY：阴，RAIN：雨，SNOW：雪，WIND：风，FOG：雾
         /// </summary>
         [JsonProperty("value")]
         public string Value { get; set; }
@@ -165,7 +165,7 @@ namespace MengWeather.Model.Weather.Forecast
     public class Cloudrate
     {
         /// <summary>
-        /// 0-10，表示：无云-全天被云遮蔽
+        ///     0-10，表示：无云-全天被云遮蔽
         /// </summary>
         [JsonProperty("value")]
         public double Value { get; set; }
@@ -186,7 +186,7 @@ namespace MengWeather.Model.Weather.Forecast
     public class Humidity
     {
         /// <summary>
-        /// 0-1，百分比*100
+        ///     0-1，百分比*100
         /// </summary>
         [JsonProperty("value")]
         public double Value { get; set; }
@@ -207,7 +207,7 @@ namespace MengWeather.Model.Weather.Forecast
     public class Precipitation
     {
         /// <summary>
-        /// 毫米/小时，*24后，0-10：小雨，10-25：中雨，25-50：大雨，50以上：暴雨
+        ///     毫米/小时，*24后，0-10：小雨，10-25：中雨，25-50：大雨，50以上：暴雨
         /// </summary>
         [JsonProperty("value")]
         public double Value { get; set; }
@@ -219,13 +219,13 @@ namespace MengWeather.Model.Weather.Forecast
     public class Wind
     {
         /// <summary>
-        /// 0-360，顺时针对应北-东-南-西
+        ///     0-360，顺时针对应北-东-南-西
         /// </summary>
         [JsonProperty("direction")]
         public double Direction { get; set; }
 
         /// <summary>
-        /// 千米/小时
+        ///     千米/小时
         /// </summary>
         [JsonProperty("speed")]
         public double Speed { get; set; }
@@ -237,7 +237,7 @@ namespace MengWeather.Model.Weather.Forecast
     public class Temperature
     {
         /// <summary>
-        /// 摄氏度℃
+        ///     摄氏度℃
         /// </summary>
         [JsonProperty("value")]
         public double Value { get; set; }
@@ -270,31 +270,31 @@ namespace MengWeather.Model.Weather.Forecast
     public class Daily
     {
         /// <summary>
-        /// 请求状态
+        ///     请求状态
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
 
         /// <summary>
-        /// 感冒指数
+        ///     感冒指数
         /// </summary>
         [JsonProperty("coldRisk")]
         public List<ColdRisk> ColdRisk { get; set; }
 
         /// <summary>
-        /// 温度
+        ///     温度
         /// </summary>
         [JsonProperty("temperature")]
         public List<Temperature_Daily> Temperature { get; set; }
 
         /// <summary>
-        /// 天气概况
+        ///     天气概况
         /// </summary>
         [JsonProperty("skycon")]
         public List<Skycon_Daily> Skycon { get; set; }
 
         /// <summary>
-        /// 云量
+        ///     云量
         /// </summary>
         [JsonProperty("cloudrate")]
         public List<Cloudrate_Daily> Cloudrate { get; set; }
@@ -306,13 +306,13 @@ namespace MengWeather.Model.Weather.Forecast
         public List<Humidity_Daily> Humidity { get; set; }
 
         /// <summary>
-        /// 日出日落
+        ///     日出日落
         /// </summary>
         [JsonProperty("astro")]
         public List<Astro> Astro { get; set; }
 
         /// <summary>
-        /// 紫外线强度
+        ///     紫外线强度
         /// </summary>
         [JsonProperty("ultraviolet")]
         public List<Ultraviolet> Ultraviolet { get; set; }
@@ -321,25 +321,25 @@ namespace MengWeather.Model.Weather.Forecast
         public List<Pm25_Daily> Pm25 { get; set; }
 
         /// <summary>
-        /// 穿衣指数
+        ///     穿衣指数
         /// </summary>
         [JsonProperty("dressing")]
         public List<Dressing> Dressing { get; set; }
 
         /// <summary>
-        /// 洗车指数
+        ///     洗车指数
         /// </summary>
         [JsonProperty("carWashing")]
         public List<CarWashing> CarWashing { get; set; }
 
         /// <summary>
-        /// 降水强度
+        ///     降水强度
         /// </summary>
         [JsonProperty("precipitation")]
         public List<Precipitation_Daliy> Precipitation { get; set; }
 
         /// <summary>
-        /// 风
+        ///     风
         /// </summary>
         [JsonProperty("wind")]
         public List<Wind_Daily> Wind { get; set; }
@@ -351,7 +351,7 @@ namespace MengWeather.Model.Weather.Forecast
         public string Index { get; set; }
 
         /// <summary>
-        /// 描述
+        ///     描述
         /// </summary>
         [JsonProperty("desc")]
         public string Desc { get; set; }
@@ -459,7 +459,7 @@ namespace MengWeather.Model.Weather.Forecast
         public string Index { get; set; }
 
         /// <summary>
-        /// 描述
+        ///     描述
         /// </summary>
         [JsonProperty("desc")]
         public string Desc { get; set; }

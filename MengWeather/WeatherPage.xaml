@@ -31,56 +31,56 @@
                     </Grid.RowDefinitions>
 
                     <Image Source="{x:Bind Path=Model.Weather.Now.Icon}"
-                       Height="240" Width="240" />
+                           Height="240" Width="240" />
 
                     <StackPanel Grid.Row="1" HorizontalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{x:Bind Model.Weather.Now.Skycon}"
-                               Style="{StaticResource TextStyle1}"
-                                   Margin="0 0 24 0" />
+                                       Style="{StaticResource TextStyle1}"
+                                       Margin="0 0 24 0" />
                             <TextBlock Text="{x:Bind Model.Weather.Now.Temperature}"
-                               Style="{StaticResource TextStyle1}" />
+                                       Style="{StaticResource TextStyle1}" />
                         </StackPanel>
                         <TextBlock Text="{x:Bind Model.Weather.UpdateTime}"
-                               TextAlignment="Center"
-                               FontSize="12"
-                               Margin="0 4 0 0"
-                               Style="{StaticResource TextStyle3}" />
+                                   TextAlignment="Center"
+                                   FontSize="12"
+                                   Margin="0 4 0 0"
+                                   Style="{StaticResource TextStyle3}" />
                     </StackPanel>
 
                     <RelativePanel Grid.Row="2"
-                               HorizontalAlignment="Stretch"
-                               Margin="0 12 0 0">
+                                   HorizontalAlignment="Stretch"
+                                   Margin="0 12 0 0">
                         <StackPanel>
                             <TextBlock Text="{x:Bind Model.Weather.Now.Precipitation}"
-                               Style="{StaticResource TextStyle3}" />
+                                       Style="{StaticResource TextStyle3}" />
                             <TextBlock Text="{x:Bind Model.Weather.Now.Humidity}"
-                               Style="{StaticResource TextStyle3}" />
+                                       Style="{StaticResource TextStyle3}" />
                             <TextBlock Text="{x:Bind Model.Weather.Now.Wind}"
-                               Style="{StaticResource TextStyle3}" />
+                                       Style="{StaticResource TextStyle3}" />
                         </StackPanel>
                         <StackPanel RelativePanel.AlignRightWithPanel="True"
-                                RelativePanel.AlignBottomWithPanel="True">
+                                    RelativePanel.AlignBottomWithPanel="True">
                             <TextBlock Text="{x:Bind Model.Weather.Now.Pm25}"
-                                   Style="{StaticResource TextStyle3}"
-                                   TextAlignment="Right" />
+                                       Style="{StaticResource TextStyle3}"
+                                       TextAlignment="Right" />
                             <TextBlock Text="{x:Bind Model.Weather.Now.Aqi}"
-                                   Style="{StaticResource TextStyle3}"
-                                   TextAlignment="Right" />
+                                       Style="{StaticResource TextStyle3}"
+                                       TextAlignment="Right" />
                         </StackPanel>
                     </RelativePanel>
 
                     <StackPanel Grid.Row="3"
-                            Margin="0 12 0 0">
+                                Margin="0 12 0 0">
                         <Rectangle Style="{StaticResource LineStyle}" />
                         <RelativePanel>
                             <TextBlock Text="小时预报"
-                                   Style="{StaticResource TextStyle2}" />
+                                       Style="{StaticResource TextStyle2}" />
                             <TextBlock Text="降水(mm/h)"
-                                   Margin="0 0 8 0"
-                                   RelativePanel.AlignBottomWithPanel="True"
-                                   RelativePanel.AlignRightWithPanel="True"
-                                   Style="{StaticResource TextStyle3}" />
+                                       Margin="0 0 8 0"
+                                       RelativePanel.AlignBottomWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True"
+                                       Style="{StaticResource TextStyle3}" />
                         </RelativePanel>
                         <ListView ItemsSource="{x:Bind Model.Weather.HourlyForecates_8}">
                             <ListView.ItemContainerStyle>
@@ -95,13 +95,13 @@
                                                    Style="{StaticResource TextStyle3}"
                                                    RelativePanel.AlignLeftWithPanel="True" />
                                         <StackPanel Orientation="Horizontal"
-                                                HorizontalAlignment="Center"
-                                                RelativePanel.AlignHorizontalCenterWithPanel="True">
+                                                    HorizontalAlignment="Center"
+                                                    RelativePanel.AlignHorizontalCenterWithPanel="True">
                                             <TextBlock Text="{x:Bind Skycon}"
-                                                   Style="{StaticResource TextStyle3}"
-                                                   Margin="0 0 8 0" />
+                                                       Style="{StaticResource TextStyle3}"
+                                                       Margin="0 0 8 0" />
                                             <TextBlock Text="{x:Bind Temperature}"
-                                                   Style="{StaticResource TextStyle3}" />
+                                                       Style="{StaticResource TextStyle3}" />
                                         </StackPanel>
                                         <TextBlock Text="{x:Bind Precipitation}"
                                                    Style="{StaticResource TextStyle3}"
@@ -111,119 +111,121 @@
                             </ListView.ItemTemplate>
                         </ListView>
                         <Button Style="{StaticResource ButtonStyle}"
-                            HorizontalAlignment="Right"
-                            Name="hourlyButton"
-                            Click="hourlyButton_Click">
+                                HorizontalAlignment="Right"
+                                Name="hourlyButton"
+                                Click="hourlyButton_Click">
                             <StackPanel Orientation="Horizontal" Name="SettingItem">
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;"
-                                              Style="{StaticResource FontIconStyle}"
-                                              Margin="0 0 8 0" />
+                                          Style="{StaticResource FontIconStyle}"
+                                          Margin="0 0 8 0" />
                                 <TextBlock Style="{StaticResource TextStyle3}"
-                                               Margin="0 -2 0 0" >详情</TextBlock>
+                                           Margin="0 -2 0 0">
+                                    详情
+                                </TextBlock>
                             </StackPanel>
                         </Button>
                     </StackPanel>
 
                     <StackPanel Grid.Row="4"
-                            Margin="0 12 0 0"
-                            HorizontalAlignment="Center">
+                                Margin="0 12 0 0"
+                                HorizontalAlignment="Center">
                         <Rectangle Style="{StaticResource LineStyle}" />
                         <TextBlock Text="未来4天"
-                               Style="{StaticResource TextStyle2}" />
+                                   Style="{StaticResource TextStyle2}" />
                         <ScrollViewer Name="dailyScrollViewer"
-                                  HorizontalScrollMode="Enabled"
-                                  HorizontalScrollBarVisibility="Hidden"
-                                  VerticalScrollMode="Disabled"
-                                  VerticalScrollBarVisibility="Hidden"
-                                  Margin="0 12 0 0">
+                                      HorizontalScrollMode="Enabled"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollMode="Disabled"
+                                      VerticalScrollBarVisibility="Hidden"
+                                      Margin="0 12 0 0">
                             <GridView Name="dailyGridView"
-                                  ItemsSource="{x:Bind Model.Weather.DailyForecates}"
-                                  Width="825"
-                                  IsItemClickEnabled="True"
-                                  SelectionMode="None"
-                                  ItemClick="dailyGridView_ItemClick">
+                                      ItemsSource="{x:Bind Model.Weather.DailyForecates}"
+                                      Width="825"
+                                      IsItemClickEnabled="True"
+                                      SelectionMode="None"
+                                      ItemClick="dailyGridView_ItemClick">
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="displayed:WeatherUnit">
                                         <StackPanel Width="160">
                                             <TextBlock Text="{x:Bind Time}"
-                                                   TextAlignment="Center"
-                                                   Style="{StaticResource TextStyle3}" />
+                                                       TextAlignment="Center"
+                                                       Style="{StaticResource TextStyle3}" />
                                             <Image Height="100" Width="100"
-                                               Source="{x:Bind Icon}" />
+                                                   Source="{x:Bind Icon}" />
                                             <TextBlock Text="{x:Bind Skycon}"
-                                                   TextAlignment="Center"
-                                                   Style="{StaticResource TextStyle3}" />
+                                                       TextAlignment="Center"
+                                                       Style="{StaticResource TextStyle3}" />
                                             <TextBlock Text="{x:Bind Temperature}"
-                                                   TextAlignment="Center"
-                                                   Style="{StaticResource TextStyle3}" />
+                                                       TextAlignment="Center"
+                                                       Style="{StaticResource TextStyle3}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridView.ItemTemplate>
                             </GridView>
                         </ScrollViewer>
                         <RelativePanel Name="dailyInfoStackPanel"
-                                   HorizontalAlignment="Stretch"
-                                   Visibility="Collapsed">
+                                       HorizontalAlignment="Stretch"
+                                       Visibility="Collapsed">
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock Name="rainTextBlock"
-                                       Style="{StaticResource TextStyle3}" />
+                                           Style="{StaticResource TextStyle3}" />
                                 <TextBlock Name="humTextBlock"
-                                       Margin="0 4 0 0"
-                                       Style="{StaticResource TextStyle3}" />
+                                           Margin="0 4 0 0"
+                                           Style="{StaticResource TextStyle3}" />
                                 <TextBlock Name="windTextBlock"
-                                       Margin="0 4 0 0"
-                                       Style="{StaticResource TextStyle3}" />
+                                           Margin="0 4 0 0"
+                                           Style="{StaticResource TextStyle3}" />
                                 <TextBlock Name="AqiTextBlock"
-                                       Margin="0 4 0 0"
-                                       Style="{StaticResource TextStyle3}" />
+                                           Margin="0 4 0 0"
+                                           Style="{StaticResource TextStyle3}" />
                             </StackPanel>
                             <RelativePanel RelativePanel.AlignRightWithPanel="True">
                                 <Image Name="sunImage"
-                                   Height="80" Width="160"
-                                   Margin="0 0 8 0"
-                                   Source="Assets/WeatherIcon/SsSr.png" />
+                                       Height="80" Width="160"
+                                       Margin="0 0 0 0"
+                                       Source="Assets/WeatherIcon/SsSr.png" />
                                 <TextBlock Name="srTextBlock"
-                                       Style="{StaticResource TextStyle3}"
-                                       RelativePanel.Below="sunImage"
-                                       Margin="0 -8 0 0" />
+                                           Style="{StaticResource TextStyle3}"
+                                           RelativePanel.Below="sunImage"
+                                           Margin="8 -8 0 0" />
                                 <TextBlock Name="ssTextBlock"
-                                       Style="{StaticResource TextStyle3}"
-                                       RelativePanel.Below="sunImage"
-                                       RelativePanel.AlignRightWith="sunImage"
-                                       Margin="-8 -8 0 0" />
+                                           Style="{StaticResource TextStyle3}"
+                                           RelativePanel.Below="sunImage"
+                                           RelativePanel.AlignRightWith="sunImage"
+                                           Margin="-8 -8 0 0" />
                             </RelativePanel>
                         </RelativePanel>
                     </StackPanel>
 
                     <StackPanel Grid.Row="5"
-                            HorizontalAlignment="Stretch">
+                                HorizontalAlignment="Stretch">
                         <Rectangle Style="{StaticResource LineStyle}" />
                         <TextBlock Text="生活贴士"
-                               Style="{StaticResource TextStyle2}" />
+                                   Style="{StaticResource TextStyle2}" />
                         <ScrollViewer Name="suggestionScrollViewer"
-                                  HorizontalAlignment="Left"
-                                  HorizontalScrollMode="Enabled"
-                                  HorizontalScrollBarVisibility="Hidden"
-                                  VerticalScrollMode="Disabled"
-                                  VerticalScrollBarVisibility="Hidden">
+                                      HorizontalAlignment="Left"
+                                      HorizontalScrollMode="Enabled"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollMode="Disabled"
+                                      VerticalScrollBarVisibility="Hidden">
                             <GridView Name="tipsGridView"
-                                  ItemsSource="{x:Bind Model.Weather.Suggestions}"
-                                  Width="688"
-                                  IsItemClickEnabled="True"
-                                  Margin=" 0 12 0 0"
-                                  SelectionMode="None"
-                                  ItemClick="tipsGridView_ItemClick">
+                                      ItemsSource="{x:Bind Model.Weather.Suggestions}"
+                                      Width="688"
+                                      IsItemClickEnabled="True"
+                                      Margin=" 0 12 0 0"
+                                      SelectionMode="None"
+                                      ItemClick="tipsGridView_ItemClick">
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="displayed:Suggestion">
                                         <StackPanel Height="80" Width="80">
                                             <Image Source="{x:Bind Icon}"
-                                               Height="40" Width="40"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center" />
+                                                   Height="40" Width="40"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
                                             <TextBlock Text="{x:Bind Name}"
-                                                   TextAlignment="Center"
-                                                   Margin="0 4 0 0"
-                                                   Style="{StaticResource TextStyle3}" />
+                                                       TextAlignment="Center"
+                                                       Margin="0 4 0 0"
+                                                       Style="{StaticResource TextStyle3}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridView.ItemTemplate>
@@ -231,9 +233,9 @@
                         </ScrollViewer>
 
                         <TextBlock Name="tipsTextBlock"
-                               Height="Auto"
-                               TextWrapping="WrapWholeWords"
-                               Style="{StaticResource TextStyle3}" />
+                                   Height="Auto"
+                                   TextWrapping="WrapWholeWords"
+                                   Style="{StaticResource TextStyle3}" />
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

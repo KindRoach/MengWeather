@@ -1,10 +1,11 @@
 <tile>
   <visual>
     <binding template="TileSmall">
-		<image src="" />
+      <image src="" />
     </binding>
 
-      <binding template="TileSquare150x150PeekImageAndText02" fallback="TileSquarePeekImageAndText02" hint-textStacking="center">
+    <binding template="TileSquare150x150PeekImageAndText02" fallback="TileSquarePeekImageAndText02"
+             hint-textStacking="center">
       <image id="1" src="" hint-align="center" />
       <text id="1" hint-style="subtitle" hint-align="center">Yangpu</text>
       <text id="2" hint-style="subtitle" hint-align="center">32℃</text>

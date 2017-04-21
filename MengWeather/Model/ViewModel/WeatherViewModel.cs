@@ -1,17 +1,15 @@
-﻿using MengWeather.Model.Weather.Displayed;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using MengWeather.Model.Weather.Displayed;
 
 namespace MengWeather.Model.ViewModel
 {
     public class WeatherViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private Weather_Displayed weather;
 
         public Weather_Displayed Weather
         {
-            get { return weather; }
+            get => weather;
             set
             {
                 weather = value;
@@ -19,5 +17,7 @@ namespace MengWeather.Model.ViewModel
                     PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(Weather)));
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

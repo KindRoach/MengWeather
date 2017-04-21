@@ -5,13 +5,13 @@ namespace MengWeather.Model.ViewModel
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private ObservableCollection<CityInfo> cityList;
+
+        private CityInfo selectedCity;
 
         public ObservableCollection<CityInfo> CityList
         {
-            get { return cityList; }
+            get => cityList;
             set
             {
                 cityList = value;
@@ -20,11 +20,9 @@ namespace MengWeather.Model.ViewModel
             }
         }
 
-        private CityInfo selectedCity;
-
         public CityInfo SelectedCity
         {
-            get { return selectedCity; }
+            get => selectedCity;
             set
             {
                 selectedCity = value;
@@ -32,5 +30,7 @@ namespace MengWeather.Model.ViewModel
                     PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCity)));
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
